@@ -103,9 +103,9 @@ public class JsonGenerator : MonoBehaviour
     "\n}" +
     "\n]"+
     "\n}";
-       
-        Debug.Log(Hand1X);
-        Debug.Log(Hand1Y);
+       dataOneHanded.Replace("٫", ".");
+        Debug.Log(dataOneHanded);
+       // Debug.Log(Hand1Y);
         if (!string.IsNullOrEmpty(FilePath)) {
             File.WriteAllText(FilePath.Replace(".png", ".json"), dataOneHanded);
             Debug.Log("nice, it (should have) worked");
@@ -228,6 +228,7 @@ public class JsonGenerator : MonoBehaviour
     "\n}"+
   "\n]"+
 "\n}";
+        dataTwoHanded.Replace("٫", ".");
         if (!string.IsNullOrEmpty(FilePath)) {
             File.WriteAllText(FilePath.Replace(".png", ".json"), dataTwoHanded);
             Debug.Log("nice, it (should have) worked");

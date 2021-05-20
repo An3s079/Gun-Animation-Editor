@@ -52,7 +52,7 @@ public class OnImportImagesPressed : MonoBehaviour
         foreach(string s in url)
         {       
         Image.sprite = DefaultTexture;
-        Image.transform.localScale = new Vector3(20,20, 1); 
+        Image.transform.localScale = new Vector3(20f,20f, 1); 
         var loader = new WWW(s);
         
         yield return loader;
@@ -69,14 +69,15 @@ public class OnImportImagesPressed : MonoBehaviour
         handIMG.SetNativeSize();
         
         
-        var newButton = Instantiate(ImgTabPrefab, new Vector3(-5.26f, 0), Quaternion.identity);
-        newButton.transform.SetParent(TabArea.transform);
+        var newButton = Instantiate(ImgTabPrefab, new Vector3(-5.26f, 0), Quaternion.identity, TabArea.transform);
+        newButton.name = "Dabutton";
+        newButton.GetComponent<RectTransform>().localPosition = new Vector3(newButton.GetComponent<RectTransform>().localPosition.x, newButton.GetComponent<RectTransform>().localPosition.y, 0);
         newButton.transform.localScale = new Vector3(1.658659f, 1.508957f, 0.9996841f);
         string ItemName = s;
         string[] ItenmName2;
         ItemName.Replace("_", " ");
         ItenmName2 = ItemName.Split('\\');
-
+        
         newButton.GetComponent<TabDisplay>().TMPtext.text = ItenmName2[ItenmName2.Length -1];
 
         newButton.GetComponent<TabDisplay>().Sprite.sprite = SpriteToUse;
@@ -101,7 +102,7 @@ public class OnImportImagesPressed : MonoBehaviour
             handIMG2.transform.position = corners[0];
             handIMG2.transform.localScale = handIMG.transform.localScale;
         }
-
+        
         readPoint = corners[0];
         JsonGenerator.FilePath = s;
         // // // // // // // // float width = (Image.GetComponent<RectTransform> ().offsetMax.x - Image.GetComponent<RectTransform> ().offsetMin.x) * Image.transform.lo;
@@ -130,22 +131,22 @@ public class OnImportImagesPressed : MonoBehaviour
     {
         if(IsTwoHanded.isOn == false)
         {
-            if(Input.GetKeyDown(KeyCode.RightArrow))
+            if(Input.GetKeyDown(KeyCode.D))
             {startTime = Time.time;
                 handIMG.transform.position += transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKeyDown(KeyCode.UpArrow))
+            if(Input.GetKeyDown(KeyCode.W))
             {startTime = Time.time;
                 handIMG.transform.position += transform.up / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKeyDown(KeyCode.DownArrow))
+            if(Input.GetKeyDown(KeyCode.S))
             {startTime = Time.time;
                 handIMG.transform.position += -transform.up / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKeyDown(KeyCode.LeftArrow))
+            if(Input.GetKeyDown(KeyCode.A))
             {startTime = Time.time;
                 handIMG.transform.position += -transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
@@ -153,31 +154,31 @@ public class OnImportImagesPressed : MonoBehaviour
         }
         else
         {
-            if(ControllingHand2 == false)
-            {
-           if(Input.GetKeyDown(KeyCode.RightArrow))
+            // if(ControllingHand2 == false)
+            // {
+           if(Input.GetKeyDown(KeyCode.D))
             {startTime = Time.time;
                 handIMG.transform.position += transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKeyDown(KeyCode.UpArrow))
+            if(Input.GetKeyDown(KeyCode.W))
             {startTime = Time.time;
                 handIMG.transform.position += transform.up / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKeyDown(KeyCode.DownArrow))
+            if(Input.GetKeyDown(KeyCode.S))
             {startTime = Time.time;
                 handIMG.transform.position += -transform.up / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKeyDown(KeyCode.LeftArrow))
+            if(Input.GetKeyDown(KeyCode.A))
             {startTime = Time.time;
                 handIMG.transform.position += -transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            }
-            else
-            {
+            // }
+            // else
+            // {
                 if(Input.GetKeyDown(KeyCode.RightArrow))
             {startTime = Time.time;
                 handIMG2.transform.position += transform.right / 5.4f;
@@ -198,7 +199,7 @@ public class OnImportImagesPressed : MonoBehaviour
                 handIMG2.transform.position += -transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            }
+            //}
 
             
         }
@@ -208,22 +209,22 @@ public class OnImportImagesPressed : MonoBehaviour
     {
          if(IsTwoHanded.isOn == false)
         {
-           if(Input.GetKey(KeyCode.RightArrow))
+           if(Input.GetKey(KeyCode.D))
             {if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKey(KeyCode.UpArrow))
+            if(Input.GetKey(KeyCode.W))
             {if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += transform.up / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKey(KeyCode.DownArrow))
+            if(Input.GetKey(KeyCode.S))
             {if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += -transform.up / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKey(KeyCode.RightArrow))
+            if(Input.GetKey(KeyCode.A))
             { if(startTime + holdTime <= Time.time)
                 handIMG.transform.position += -transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
@@ -231,31 +232,31 @@ public class OnImportImagesPressed : MonoBehaviour
         }
         else
         {
-             if(ControllingHand2 == false)
-            {
-           if(Input.GetKey(KeyCode.RightArrow))
+            //  if(ControllingHand2 == false)
+            // {
+           if(Input.GetKey(KeyCode.D))
             {if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKey(KeyCode.UpArrow))
+            if(Input.GetKey(KeyCode.W))
             {if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += transform.up / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKey(KeyCode.DownArrow))
+            if(Input.GetKey(KeyCode.S))
             {if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += -transform.up / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            if(Input.GetKey(KeyCode.RightArrow))
+            if(Input.GetKey(KeyCode.A))
             {if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += -transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            }
-            else
-            {
+            // }
+            // else
+            // {
             if(Input.GetKey(KeyCode.RightArrow))
             {if (startTime + holdTime <= Time.time)
                 handIMG2.transform.position += transform.right / 5.4f;
@@ -275,7 +276,7 @@ public class OnImportImagesPressed : MonoBehaviour
             {if (startTime + holdTime <= Time.time)
                 handIMG2.transform.position += -transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
-           }
+           //}
            }
         }
     }

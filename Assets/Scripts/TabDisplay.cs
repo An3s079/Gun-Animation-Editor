@@ -39,13 +39,12 @@ public class TabDisplay : MonoBehaviour
 
     public void OnTabClicked()
     {
+
         onImportImagesPressed.SelectedTab = this;
         SpriteDisplay.sprite = DefaultTexture;
         SpriteDisplay.SetNativeSize();
         SpriteDisplay.sprite.texture.filterMode = FilterMode.Point;
-        HandImage.transform.position = Hand1Pos;
-        HandImage2.transform.position = Hand2Pos;
-        HandImage2.transform.localScale = HandImage.transform.localScale;
+
         SpriteDisplay.sprite = BeegSprite;
         SpriteDisplay.SetNativeSize();
         GreyBackgroundThangIdk.rectTransform.sizeDelta = SpriteDisplay.rectTransform.sizeDelta;
@@ -53,11 +52,6 @@ public class TabDisplay : MonoBehaviour
         GreyBackgroundThangIdk.transform.position = SpriteDisplay.transform.position;       
         HandImage.SetNativeSize();
         var handCollider = HandImage.GetComponent<BoxCollider2D>();
-
-
-        Vector3[] corners = new Vector3[4];
-        SpriteDisplay.GetComponent<RectTransform>().GetWorldCorners(corners);
-        OnImportImagesPressed.readPoint = corners[0];
 
         //SpriteDisplay.SizeToParent();
         foreach(Transform child in ScrollThingBitchIdkLol.transform)
@@ -75,7 +69,14 @@ public class TabDisplay : MonoBehaviour
             jsonGenerator.CheckMark.SetActive(true);
         else
             jsonGenerator.CheckMark.SetActive(false);
-        
+
+        Vector3[] corners = new Vector3[4];
+        SpriteDisplay.GetComponent<RectTransform>().GetWorldCorners(corners);
+        Hand1Pos = corners[0];
+        Hand2Pos = corners[0];
+        HandImage.transform.position = Hand1Pos;
+        HandImage2.transform.position = Hand2Pos;
+        HandImage2.transform.localScale = HandImage.transform.localScale;
     }
 
     void Update()

@@ -43,7 +43,7 @@ public class JsonGenerator : MonoBehaviour
         float correctedXOffsetValue = XOffsetValue/16;
         float correctedYOffsetValue = YOffsetValue/16;
 
-        float moveAmount = transform.right.x /  5.4f;
+        float moveAmount = transform.right.x / 5.4f;
         float distanceXHand1 = hand.transform.position.x - OnImportImagesPressed.readPoint.x;
         var PixelsMovedHand1X = distanceXHand1 / moveAmount;
         var RoundedPixelsMovedHand1X = Mathf.Round(PixelsMovedHand1X);
@@ -85,7 +85,7 @@ public class JsonGenerator : MonoBehaviour
     "\n   \"name\": \"PrimaryHand\","+
     "\n\"position\": {" +
     $"\n   \"x\": {Hand1X},"+
-    $"\n   \"y\":{Hand1Y},"+
+    $"\n   \"y\": {Hand1Y},"+
     "\n   \"z\": 0.0" +
     "\n}," +
     "\n\"angle\": 0.0"+
@@ -128,14 +128,14 @@ public class JsonGenerator : MonoBehaviour
         float correctedYOffsetValue = YOffsetValue/16;
 
             //Hand1
-             float moveAmount = transform.right.x /  5.4f;
+             float moveAmount = transform.right.x /  2.29f;
         float distanceXHand1 = hand.transform.position.x - OnImportImagesPressed.readPoint.x;
         var PixelsMovedHand1X = distanceXHand1 / moveAmount;
         var RoundedPixelsMovedHand1X = Mathf.Round(PixelsMovedHand1X);
 
         Hand1X = (RoundedPixelsMovedHand1X)/16;
 
-        float moveAmountY = transform.up.y /  5.4f;
+        float moveAmountY = transform.up.y /  2.29f;
         float distanceYHand1 = hand.transform.position.y - OnImportImagesPressed.readPoint.y;
         var PixelsMovedHand1Y = distanceYHand1 / moveAmountY;
         var RoundedPixelsMovedHand1Y = Mathf.Round(PixelsMovedHand1Y);
@@ -153,14 +153,14 @@ public class JsonGenerator : MonoBehaviour
         
 
             //Hand2
-            float moveAmount2handed = transform.right.x /  5.4f;
+            float moveAmount2handed = transform.right.x /  2.29f;
         float distanceXHand2 = hand2.transform.position.x - OnImportImagesPressed.readPoint.x;
         var PixelsMovedHand2X = distanceXHand2 / moveAmount2handed;
         var RoundedPixelsMovedHand2X = Mathf.Round(PixelsMovedHand2X);
 
         Hand2X = (RoundedPixelsMovedHand2X)/16;
 
-        float moveAmount2handedY = transform.up.y /  5.4f;
+        float moveAmount2handedY = transform.up.y /  2.29f;
         float distanceYHand2 = hand2.transform.position.y - OnImportImagesPressed.readPoint.y;
         var PixelsMovedHand2Y = distanceYHand2 / moveAmount2handedY;
         var RoundedPixelsMovedHand2Y = Mathf.Round(PixelsMovedHand2Y);

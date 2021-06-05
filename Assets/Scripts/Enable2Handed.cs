@@ -17,9 +17,9 @@ public class Enable2Handed : MonoBehaviour
             Hand2.SetActive(true);
         Hand2.transform.position = OnImportImagesPressed.readPoint;
 
-        // if(ToggleHand.activeSelf == true)
-        //     ToggleHand.SetActive(false);
-        // else
-        //     ToggleHand.SetActive(true);
-    }
+		//if (ToggleHand.activeSelf == true)
+		//	ToggleHand.SetActive(false);
+		//else
+		//	ToggleHand.SetActive(true);
+	}
 }

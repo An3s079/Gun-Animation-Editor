@@ -36,7 +36,7 @@ public class HandController : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y);
           Vector3 DesiredHandPos = OnImportImagesPressed.readPoint;
         
-        float moveAmount = transform.right.x /  5.4f;
+        float moveAmount = transform.right.x / 5.4f;
         float distanceXHand1 = transform.position.x - OnImportImagesPressed.readPoint.x;
         var PixelsMovedHand1X = distanceXHand1 / moveAmount;
         var RoundedPixelsMovedHand1X = Mathf.Round(PixelsMovedHand1X);
@@ -45,10 +45,10 @@ public class HandController : MonoBehaviour
         var PixelsMovedHand1Y = distanceYHand1 / moveAmount;
         var RoundedPixelsMovedHand1Y = Mathf.Round(PixelsMovedHand1Y);
         for(int i = 0; i < RoundedPixelsMovedHand1X; i++)
-            DesiredHandPos.x += transform.right.x /  5.4f;
+            DesiredHandPos.x += transform.right.x / 5.4f;
 
         for(int i = 0; i < RoundedPixelsMovedHand1Y; i++)
-            DesiredHandPos.y += transform.right.x /  5.4f;
+            DesiredHandPos.y += transform.right.x / 5.4f;
         transform.position = DesiredHandPos;
     }
 }

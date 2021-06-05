@@ -47,7 +47,7 @@ public class OnImportImagesPressed : MonoBehaviour
      
    }
 
- private IEnumerator OutputRoutine(string[] url) {
+    private IEnumerator OutputRoutine(string[] url) {
     
         foreach(string s in url)
         {       
@@ -62,9 +62,7 @@ public class OnImportImagesPressed : MonoBehaviour
         Image.preserveAspect = true;
         Image.sprite.texture.filterMode = FilterMode.Point;
         Image.SetNativeSize();
-        GreyBackgroundThangIdk.rectTransform.sizeDelta = Image.rectTransform.sizeDelta;
-        GreyBackgroundThangIdk.transform.localScale = Image.transform.localScale;
-        GreyBackgroundThangIdk.transform.position = Image.transform.position;
+        
 
         handIMG.SetNativeSize();
         
@@ -94,23 +92,18 @@ public class OnImportImagesPressed : MonoBehaviour
         newButton.GetComponent<TabDisplay>().onImportImagesPressed = this;
         newButton.GetComponent<TabDisplay>().jsonGenerator = jsonGenerator;
         SelectedTab = newButton.GetComponent<TabDisplay>();
-        Vector3[] corners = new Vector3[4];
-        Image.GetComponent<RectTransform>().GetWorldCorners(corners);
-        handIMG.transform.position = corners[0];
-        if(IsTwoHanded.isOn ==true)
-        {
+            Vector3[] corners = new Vector3[4];
+            Image.GetComponent<RectTransform>().GetWorldCorners(corners);
+            handIMG.transform.position = corners[0];
+            JsonGenerator.FilePath = s;
             handIMG2.transform.position = corners[0];
             handIMG2.transform.localScale = handIMG.transform.localScale;
+            // // // // // // // // float width = (Image.GetComponent<RectTransform> ().offsetMax.x - Image.GetComponent<RectTransform> ().offsetMin.x) * Image.transform.lo;
+            // // // // // // // // SizePerPixel =  width / Image.texture.width;
+            // // // // // // // // Debug.Log(SizePerPixel + "width"+ width);
         }
+
         
-        readPoint = corners[0];
-        JsonGenerator.FilePath = s;
-        // // // // // // // // float width = (Image.GetComponent<RectTransform> ().offsetMax.x - Image.GetComponent<RectTransform> ().offsetMin.x) * Image.transform.lo;
-        // // // // // // // // SizePerPixel =  width / Image.texture.width;
-        // // // // // // // // Debug.Log(SizePerPixel + "width"+ width);
-        }
-
-
         
 
     }
@@ -121,7 +114,6 @@ public class OnImportImagesPressed : MonoBehaviour
 
     var center = (corners[0] + corners[2]) / 2;
     var size = corners[2]- corners[0];
-
     Gizmos.color = new Color(0, 1, 0, 0.5f);
     Gizmos.DrawCube(center, size);
     }
@@ -129,7 +121,15 @@ public class OnImportImagesPressed : MonoBehaviour
     float holdTime = 0.3f;
     void Update()
     {
-        if(IsTwoHanded.isOn == false)
+
+        GreyBackgroundThangIdk.rectTransform.sizeDelta = Image.rectTransform.sizeDelta;
+        GreyBackgroundThangIdk.transform.localScale = Image.transform.localScale;
+        GreyBackgroundThangIdk.transform.position = Image.transform.position;
+        Vector3[] corners = new Vector3[4];
+        Image.GetComponent<RectTransform>().GetWorldCorners(corners);
+        readPoint = corners[0];
+
+        if (IsTwoHanded.isOn == false)
         {
             if(Input.GetKeyDown(KeyCode.D))
             {startTime = Time.time;
@@ -154,9 +154,9 @@ public class OnImportImagesPressed : MonoBehaviour
         }
         else
         {
-            // if(ControllingHand2 == false)
-            // {
-           if(Input.GetKeyDown(KeyCode.D))
+			//if (ControllingHand2 == false)
+			//{
+				if (Input.GetKeyDown(KeyCode.D))
             {startTime = Time.time;
                 handIMG.transform.position += transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
@@ -176,10 +176,10 @@ public class OnImportImagesPressed : MonoBehaviour
                 handIMG.transform.position += -transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            // }
-            // else
-            // {
-                if(Input.GetKeyDown(KeyCode.RightArrow))
+			//}
+			//else
+			//{
+				if (Input.GetKeyDown(KeyCode.RightArrow))
             {startTime = Time.time;
                 handIMG2.transform.position += transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
@@ -199,10 +199,10 @@ public class OnImportImagesPressed : MonoBehaviour
                 handIMG2.transform.position += -transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            //}
+			//}
 
-            
-        }
+
+		}
     }
 
     private void UpdateEverySecond()
@@ -232,9 +232,9 @@ public class OnImportImagesPressed : MonoBehaviour
         }
         else
         {
-            //  if(ControllingHand2 == false)
-            // {
-           if(Input.GetKey(KeyCode.D))
+			//if (ControllingHand2 == false)
+			//{
+				if (Input.GetKey(KeyCode.D))
             {if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
@@ -254,10 +254,10 @@ public class OnImportImagesPressed : MonoBehaviour
                 handIMG.transform.position += -transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-            // }
-            // else
-            // {
-            if(Input.GetKey(KeyCode.RightArrow))
+			//}
+			//else
+			//{
+				if (Input.GetKey(KeyCode.RightArrow))
             {if (startTime + holdTime <= Time.time)
                 handIMG2.transform.position += transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;

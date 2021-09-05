@@ -24,6 +24,7 @@ public class TabDisplay : MonoBehaviour
 
     private Vector2 Hand1Pos;
     private Vector2 Hand2Pos;
+    private Vector2 CanvasPos;
     public bool JsonHasBeenGenerated;
     public OnImportImagesPressed onImportImagesPressed;
     public JsonGenerator jsonGenerator;
@@ -72,8 +73,7 @@ public class TabDisplay : MonoBehaviour
 
         Vector3[] corners = new Vector3[4];
         SpriteDisplay.GetComponent<RectTransform>().GetWorldCorners(corners);
-        Hand1Pos = corners[0];
-        Hand2Pos = corners[0];
+        SpriteDisplay.transform.position = CanvasPos;
         HandImage.transform.position = Hand1Pos;
         HandImage2.transform.position = Hand2Pos;
         HandImage2.transform.localScale = HandImage.transform.localScale;
@@ -85,6 +85,7 @@ public class TabDisplay : MonoBehaviour
         {
             Hand1Pos = HandImage.transform.position;
             Hand2Pos = HandImage2.transform.position;
+            CanvasPos = SpriteDisplay.transform.position;
         }
     }
 

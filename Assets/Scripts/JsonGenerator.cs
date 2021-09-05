@@ -103,13 +103,18 @@ public class JsonGenerator : MonoBehaviour
     "\n}" +
     "\n]"+
     "\n}";
-       dataOneHanded.Replace("٫", ".");
         Debug.Log(dataOneHanded);
        // Debug.Log(Hand1Y);
         if (!string.IsNullOrEmpty(FilePath)) {
-            File.WriteAllText(FilePath.Replace(".png", ".json"), dataOneHanded);
-            Debug.Log("nice, it (should have) worked");
-            onImportImagesPressed.SelectedTab.JsonHasBeenGenerated = true;
+                File.WriteAllText(FilePath.Replace(".png", ".json"), dataOneHanded);
+
+                string s = File.ReadAllText(FilePath.Replace(".png", ".json"));
+                s.Replace(",", ".");
+
+                File.WriteAllText(FilePath.Replace(".png", ".json"), s);
+
+                Debug.Log("nice, it (should have) worked");
+                onImportImagesPressed.SelectedTab.JsonHasBeenGenerated = true;
         }
         else
         {
@@ -128,14 +133,14 @@ public class JsonGenerator : MonoBehaviour
         float correctedYOffsetValue = YOffsetValue/16;
 
             //Hand1
-             float moveAmount = transform.right.x /  2.29f;
+             float moveAmount = transform.right.x / 5.4f;
         float distanceXHand1 = hand.transform.position.x - OnImportImagesPressed.readPoint.x;
         var PixelsMovedHand1X = distanceXHand1 / moveAmount;
         var RoundedPixelsMovedHand1X = Mathf.Round(PixelsMovedHand1X);
 
         Hand1X = (RoundedPixelsMovedHand1X)/16;
 
-        float moveAmountY = transform.up.y /  2.29f;
+        float moveAmountY = transform.up.y / 5.4f;
         float distanceYHand1 = hand.transform.position.y - OnImportImagesPressed.readPoint.y;
         var PixelsMovedHand1Y = distanceYHand1 / moveAmountY;
         var RoundedPixelsMovedHand1Y = Mathf.Round(PixelsMovedHand1Y);
@@ -153,14 +158,14 @@ public class JsonGenerator : MonoBehaviour
         
 
             //Hand2
-            float moveAmount2handed = transform.right.x /  2.29f;
+            float moveAmount2handed = transform.right.x / 5.4f;
         float distanceXHand2 = hand2.transform.position.x - OnImportImagesPressed.readPoint.x;
         var PixelsMovedHand2X = distanceXHand2 / moveAmount2handed;
         var RoundedPixelsMovedHand2X = Mathf.Round(PixelsMovedHand2X);
 
         Hand2X = (RoundedPixelsMovedHand2X)/16;
 
-        float moveAmount2handedY = transform.up.y /  2.29f;
+        float moveAmount2handedY = transform.up.y / 5.4f;
         float distanceYHand2 = hand2.transform.position.y - OnImportImagesPressed.readPoint.y;
         var PixelsMovedHand2Y = distanceYHand2 / moveAmount2handedY;
         var RoundedPixelsMovedHand2Y = Mathf.Round(PixelsMovedHand2Y);
@@ -228,12 +233,18 @@ public class JsonGenerator : MonoBehaviour
     "\n}"+
   "\n]"+
 "\n}";
-        dataTwoHanded.Replace("٫", ".");
-        if (!string.IsNullOrEmpty(FilePath)) {
-            File.WriteAllText(FilePath.Replace(".png", ".json"), dataTwoHanded);
-            Debug.Log("nice, it (should have) worked");
-            onImportImagesPressed.SelectedTab.JsonHasBeenGenerated = true;
-        }
+        
+            if (!string.IsNullOrEmpty(FilePath)) 
+            {
+                File.WriteAllText(FilePath.Replace(".png", ".json"), dataTwoHanded);
+
+                string s = File.ReadAllText(FilePath.Replace(".png", ".json"));
+                s.Replace(",", ".");
+
+                File.WriteAllText(FilePath.Replace(".png", ".json"), s);
+                Debug.Log("nice, it (should have) worked");
+                onImportImagesPressed.SelectedTab.JsonHasBeenGenerated = true;
+            }
         else
         {
             Debug.LogError("Shit, path was empty!");

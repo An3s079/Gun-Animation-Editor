@@ -129,8 +129,6 @@ public class OnImportImagesPressed : MonoBehaviour
         Image.GetComponent<RectTransform>().GetWorldCorners(corners);
         readPoint = corners[0];
 
-        if (IsTwoHanded.isOn == false)
-        {
             if(Input.GetKeyDown(KeyCode.D))
             {startTime = Time.time;
                 handIMG.transform.position += transform.right / 5.4f;
@@ -151,134 +149,98 @@ public class OnImportImagesPressed : MonoBehaviour
                 handIMG.transform.position += -transform.right / 5.4f;
                 SelectedTab.JsonHasBeenGenerated = false;
             }
-        }
-        else
-        {
-			//if (ControllingHand2 == false)
-			//{
-				if (Input.GetKeyDown(KeyCode.D))
-            {startTime = Time.time;
-                handIMG.transform.position += transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKeyDown(KeyCode.W))
-            {startTime = Time.time;
-                handIMG.transform.position += transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKeyDown(KeyCode.S))
-            {startTime = Time.time;
-                handIMG.transform.position += -transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKeyDown(KeyCode.A))
-            {startTime = Time.time;
-                handIMG.transform.position += -transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-			//}
-			//else
+        
+        if(IsTwoHanded.isOn)
+		{
+			//if (ControllingHand2 == true)
 			//{
 				if (Input.GetKeyDown(KeyCode.RightArrow))
-            {startTime = Time.time;
-                handIMG2.transform.position += transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKeyDown(KeyCode.UpArrow))
-            {startTime = Time.time;
-                handIMG2.transform.position += transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKeyDown(KeyCode.DownArrow))
-            {startTime = Time.time;
-                handIMG2.transform.position += -transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKeyDown(KeyCode.LeftArrow))
-            {startTime = Time.time;
-                handIMG2.transform.position += -transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
+				{
+					startTime = Time.time;
+					handIMG2.transform.position += transform.right / 5.4f;
+					SelectedTab.JsonHasBeenGenerated = false;
+				}
+				if (Input.GetKeyDown(KeyCode.UpArrow))
+				{
+					startTime = Time.time;
+					handIMG2.transform.position += transform.up / 5.4f;
+					SelectedTab.JsonHasBeenGenerated = false;
+				}
+				if (Input.GetKeyDown(KeyCode.DownArrow))
+				{
+					startTime = Time.time;
+					handIMG2.transform.position += -transform.up / 5.4f;
+					SelectedTab.JsonHasBeenGenerated = false;
+				}
+				if (Input.GetKeyDown(KeyCode.LeftArrow))
+				{
+					startTime = Time.time;
+					handIMG2.transform.position += -transform.right / 5.4f;
+					SelectedTab.JsonHasBeenGenerated = false;
+				}
 			//}
 
 
 		}
-    }
+	}
 
     private void UpdateEverySecond()
     {
-         if(IsTwoHanded.isOn == false)
+        if (Input.GetKey(KeyCode.D))
         {
-           if(Input.GetKey(KeyCode.D))
-            {if (startTime + holdTime <= Time.time)
+            if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKey(KeyCode.W))
-            {if (startTime + holdTime <= Time.time)
-                handIMG.transform.position += transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKey(KeyCode.S))
-            {if (startTime + holdTime <= Time.time)
-                handIMG.transform.position += -transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKey(KeyCode.A))
-            { if(startTime + holdTime <= Time.time)
-                handIMG.transform.position += -transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
+            SelectedTab.JsonHasBeenGenerated = false;
         }
-        else
+        if (Input.GetKey(KeyCode.W))
         {
-			//if (ControllingHand2 == false)
-			//{
-				if (Input.GetKey(KeyCode.D))
-            {if (startTime + holdTime <= Time.time)
-                handIMG.transform.position += transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKey(KeyCode.W))
-            {if (startTime + holdTime <= Time.time)
+            if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKey(KeyCode.S))
-            {if (startTime + holdTime <= Time.time)
+            SelectedTab.JsonHasBeenGenerated = false;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += -transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKey(KeyCode.A))
-            {if (startTime + holdTime <= Time.time)
+            SelectedTab.JsonHasBeenGenerated = false;
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (startTime + holdTime <= Time.time)
                 handIMG.transform.position += -transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-			//}
-			//else
+            SelectedTab.JsonHasBeenGenerated = false;
+        }
+        if (IsTwoHanded.isOn)
+        { 
+			
+			//if(ControllingHand2 == true)
 			//{
 				if (Input.GetKey(KeyCode.RightArrow))
-            {if (startTime + holdTime <= Time.time)
-                handIMG2.transform.position += transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKey(KeyCode.UpArrow))
-            {if (startTime + holdTime <= Time.time)
-                handIMG2.transform.position += transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKey(KeyCode.DownArrow))
-            {if (startTime + holdTime <= Time.time)
-                handIMG2.transform.position += -transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKey(KeyCode.LeftArrow))
-            {if (startTime + holdTime <= Time.time)
-                handIMG2.transform.position += -transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-           //}
-           }
-        }
+				{
+					if (startTime + holdTime <= Time.time)
+						handIMG2.transform.position += transform.right / 5.4f;
+					SelectedTab.JsonHasBeenGenerated = false;
+				}
+				if (Input.GetKey(KeyCode.UpArrow))
+				{
+					if (startTime + holdTime <= Time.time)
+						handIMG2.transform.position += transform.up / 5.4f;
+					SelectedTab.JsonHasBeenGenerated = false;
+				}
+				if (Input.GetKey(KeyCode.DownArrow))
+				{
+					if (startTime + holdTime <= Time.time)
+						handIMG2.transform.position += -transform.up / 5.4f;
+					SelectedTab.JsonHasBeenGenerated = false;
+				}
+				if (Input.GetKey(KeyCode.LeftArrow))
+				{
+					if (startTime + holdTime <= Time.time)
+						handIMG2.transform.position += -transform.right / 5.4f;
+					SelectedTab.JsonHasBeenGenerated = false;
+				}
+			//}
+		}
     }
 
 }

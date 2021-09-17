@@ -21,6 +21,8 @@ public class CanvasGrabber : MonoBehaviour
         deltaX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - transform.position.x;
         deltaY = Camera.main.ScreenToWorldPoint(Input.mousePosition).y - transform.position.y;
         onImportImagesPressed.SelectedTab.JsonHasBeenGenerated = false;
+        //pew pew pew
+
     }
 
     private void OnMouseDrag()

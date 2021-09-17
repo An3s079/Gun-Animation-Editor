@@ -7,7 +7,7 @@ using UnityEditor;
 using SFB;
 using UnityEngine.EventSystems;
 
-public class HandController : MonoBehaviour
+public class HandController : MonoBehaviour, IDragHandler,IBeginDragHandler,IEndDragHandler
 {
     Vector2 mousePos;
     private float  deltaX, deltaY;
@@ -15,8 +15,52 @@ public class HandController : MonoBehaviour
 
     [SerializeField]
     private OnImportImagesPressed onImportImagesPressed;
+    [SerializeField]
+    private Canvas canvas;
+    [SerializeField]
+    private RectTransform rectTransform;
+    private void Start()
+    {
+        if (canvas == null)
+        {
+            canvas = GetComponentInParent<Canvas>();
+        }
+        if (rectTransform == null)
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
+        
+    }
 
-    private void OnMouseDown()
+
+
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+    }
+
+    void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
+    {
+        
+    }
+
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+    {
+        Vector2 position = rectTransform.anchoredPosition;
+        int roundX = Mathf.RoundToInt(position.x / 10) * 10;
+        int roundY = Mathf.RoundToInt(position.y / 10) * 10;
+        position = new Vector2(roundX,roundY);
+        rectTransform.anchoredPosition = position;
+    }
+
+
+
+
+
+
+
+    /*private void OnMouseDown()
     {
         deltaX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - transform.position.x;
         deltaY = Camera.main.ScreenToWorldPoint(Input.mousePosition).y - transform.position.y;
@@ -50,5 +94,7 @@ public class HandController : MonoBehaviour
         for(int i = 0; i < RoundedPixelsMovedHand1Y; i++)
             DesiredHandPos.y += transform.right.x / 5.4f;
         transform.position = DesiredHandPos;
-    }
+    }*/
+
+    
 }

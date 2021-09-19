@@ -71,14 +71,15 @@ public class MainSpriteController : MonoBehaviour
         {
             Image mainSprite = StaticRefrences.Instance.MainSprite;
             RawImage hand1 = StaticRefrences.Instance.handIMG;
-            RawImage hand2 = StaticRefrences.Instance.handIMG;
+            RawImage hand2 = StaticRefrences.Instance.handIMG2;
             FrameInfo info = currentFrame;
             info.hand1PositionX = (hand1.rectTransform.anchoredPosition.x - mainSprite.rectTransform.anchoredPosition.x) / 10;
             info.hand1PositionY = (hand1.rectTransform.anchoredPosition.y - mainSprite.rectTransform.anchoredPosition.y) / 10;
             info.hand2PositionX = (hand2.rectTransform.anchoredPosition.x - mainSprite.rectTransform.anchoredPosition.x) / 10;
             info.hand2PositionY = (hand2.rectTransform.anchoredPosition.y - mainSprite.rectTransform.anchoredPosition.y) / 10;
-            info.offsetX = float.Parse(xOffset.text);
-            info.offsetY = float.Parse(xOffset.text);
+            float.TryParse(xOffset.text,out info.offsetX);
+            float.TryParse(yOffset.text,out info.offsetY);
+            info.isTwoHanded = StaticRefrences.Instance.IsTwoHanded.isOn;
         }
     }
     private void UpdateSprite()
@@ -93,10 +94,13 @@ public class MainSpriteController : MonoBehaviour
             Vector2 pos = new Vector2(-mainSprite.sprite.rect.width / 2 * 10, -mainSprite.sprite.rect.height / 2 * 10);
             pos = new Vector2(Mathf.Round(pos.x / 10f) * 10, Mathf.Round(pos.y / 10f) * 10);
             mainSprite.rectTransform.anchoredPosition = pos;
+            
             Vector2 handpos1 = new Vector2(pos.x + currentFrame.hand1PositionX * 10, pos.y + currentFrame.hand1PositionY * 10);
             Vector2 handpos2 = new Vector2(pos.x + currentFrame.hand2PositionX * 10, pos.y + currentFrame.hand2PositionY * 10);
+            
             StaticRefrences.Instance.handIMG.rectTransform.anchoredPosition = handpos1;
             StaticRefrences.Instance.handIMG2.rectTransform.anchoredPosition = handpos2;
+            StaticRefrences.Instance.IsTwoHanded.isOn = currentFrame.isTwoHanded;
         }
         
     }

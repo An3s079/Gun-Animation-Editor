@@ -63,60 +63,19 @@ public class JsonGenerator : MonoBehaviour
     {
         for (int i = 0; i < MainSpriteController.instance.currentAnimation.frames.Length; i++)
         {
-            string data;
-            FrameInfo frameInfo = MainSpriteController.instance.currentAnimation.frames[i];
-            FrameJsonInfo frameJsonInfo = new FrameJsonInfo();
-
-
-            frameJsonInfo.x = frameInfo.offsetX;
-            frameJsonInfo.y = frameInfo.offsetY;
-            frameJsonInfo.width = frameInfo.texture.width;
-            frameJsonInfo.height = frameInfo.texture.height;
-
-            List<object> attachPoints = new List<object>();
-            ArrayTypeUnkownAndSize iHonestlyDontKnowWhatToCallThisThing = new ArrayTypeUnkownAndSize(twoHandToggle.isOn ? 3 : 4);
-            attachPoints.Add(iHonestlyDontKnowWhatToCallThisThing);
-
-            var primaryHandX = (frameInfo.hand1PositionX + frameInfo.offsetX) / 16;
-            var primaryHandY = (frameInfo.hand1PositionY + frameInfo.offsetY) / 16;
-            attachPoints.Add(new AttachPoint("SecondaryHand", new PositionVector(primaryHandX, primaryHandY)));
-
-            if (frameInfo.isTwoHanded)
-            {
-                var secondaryHandX = (frameInfo.hand2PositionX + frameInfo.offsetX) / 16;
-                var secondaryHandY = (frameInfo.hand2PositionY + frameInfo.offsetY) / 16;
-                attachPoints.Add(new AttachPoint("SecondaryHand", new PositionVector(secondaryHandX, secondaryHandY)));
-            }
-
-            attachPoints.Add(new AttachPoint("Clip", new PositionVector(0.5625f, 0.375f)));
-            attachPoints.Add(new AttachPoint("Casing", new PositionVector(0.5625f, 0.375f)));
-
-            frameJsonInfo.attachPoints = attachPoints.ToArray();
-
-
-            data = JsonConvert.SerializeObject(frameJsonInfo);
-
-
-            if (!string.IsNullOrEmpty(frameInfo.path))
-            {
-                File.WriteAllText(frameInfo.path.Replace(".png", ".json"), data);
-                Debug.Log("nice, it (should have) worked");
-                onImportImagesPressedComponent.SelectedTab.JsonHasBeenGenerated = true;
-            }
-            else
-            {
-                Debug.LogError("Shit, path was empty!");
-            }
+            OutputFrameAsJson(MainSpriteController.instance.currentAnimation.frames[i]);
         }
         
     }
     public void OnCreateJsonPressed()
     {
-        string data;
-        var xOffsetValue = float.Parse(xOffset.text);
-        var yOffsetValue = float.Parse(xOffset.text);
-
         FrameInfo frameInfo = MainSpriteController.instance.currentFrame;
+        OutputFrameAsJson(frameInfo);
+    }
+    private void OutputFrameAsJson(FrameInfo info)
+    {
+        string data;
+        FrameInfo frameInfo = info;
         FrameJsonInfo frameJsonInfo = new FrameJsonInfo();
 
 
@@ -131,7 +90,7 @@ public class JsonGenerator : MonoBehaviour
 
         var primaryHandX = (frameInfo.hand1PositionX + frameInfo.offsetX) / 16;
         var primaryHandY = (frameInfo.hand1PositionY + frameInfo.offsetY) / 16;
-        attachPoints.Add(new AttachPoint("SecondaryHand", new PositionVector(primaryHandX, primaryHandY)));
+        attachPoints.Add(new AttachPoint("PrimaryHand", new PositionVector(primaryHandX, primaryHandY)));
 
         if (frameInfo.isTwoHanded)
         {
@@ -146,20 +105,73 @@ public class JsonGenerator : MonoBehaviour
         frameJsonInfo.attachPoints = attachPoints.ToArray();
 
 
-        data = JsonConvert.SerializeObject(frameJsonInfo);
+        data = JsonConvert.SerializeObject(frameJsonInfo, Formatting.Indented);
 
 
         if (!string.IsNullOrEmpty(frameInfo.path))
         {
-            File.WriteAllText(FilePath.Replace(".png", ".json"), data);
+            if (!frameInfo.path.EndsWith(".png"))
+            {
+                frameInfo.path += ".png";
+            }
+            File.WriteAllText(frameInfo.path.Replace(".png", ".json"), data);
             Debug.Log("nice, it (should have) worked");
-            onImportImagesPressedComponent.SelectedTab.JsonHasBeenGenerated = true;
         }
         else
         {
             Debug.LogError("Shit, path was empty!");
         }
+    }
+    public void GenerateOffsetCode()
+    {
+        GaeAnimationInfo animation = MainSpriteController.instance.currentAnimation;
+        if (animation != null)
+        {
+            string offsetCode = 
+                "//make sure the animation name and variable names are correct, the program may have made the wrong desicion\n" +
+                "tk2dSpriteAnimationClip animationclip = gun.sprite.spriteAnimator.GetClipByName(" + animation.animationName.Trim('_') + ");\n" +
+                "float[] offsetsX = new float[] {";
+            offsetCode += (animation.frames[0].offsetX/16).ToString("f4", culture);
+            for (int i = 1; i < animation.frames.Length; i++)
+            {
+                offsetCode += "," + (animation.frames[i].offsetX/16).ToString("f4", culture);
+            }
+            offsetCode += "};\n";
 
+
+            offsetCode += "float[] offsetsY = new float[] {";
+            offsetCode += (animation.frames[0].offsetY/16f).ToString("f4", culture);
+            for (int i = 1; i < animation.frames.Length; i++)
+            {
+                offsetCode += "," + (animation.frames[i].offsetY/16f).ToString("f4",culture);
+            }
+            offsetCode += "};\n";
+            offsetCode +=
+            "for (int i = 0; i < offsetsX.Length && i < offsetsY.Length && i < fireClip.frames.Length; i++)" +
+                "{" +
+                    "int id = fireClip.frames[i].spriteId;" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position0.x += offsetsX[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position0.y += offsetsY[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position1.x += offsetsX[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position1.y += offsetsY[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position2.x += offsetsX[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position2.y += offsetsY[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position3.x += offsetsX[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position3.y += offsetsY[i];" +
+               " }";
+
+            if (!string.IsNullOrEmpty(animation.AnimationDirectory))
+            {
+                
+                File.WriteAllText(Path.Combine(animation.AnimationDirectory, animation.animationName+" offset code"+".txt"), offsetCode);
+                Debug.Log("nice, it (should have) worked");
+            }
+            else
+            {
+                Debug.LogError("Shit, path was empty!");
+            }
+
+        }
     }
 
     private void Update()

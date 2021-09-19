@@ -49,11 +49,13 @@ public class OnImportImagesPressed : MonoBehaviour
 
                 GaeAnimationInfo animationInfo = new GaeAnimationInfo();
 
+                animationInfo.AnimationDirectory = info.DirectoryName;
+
                 animationInfo.frames = new FrameInfo[1];
                 
                 animationInfo.frames[0] = LoadSingleFrame(info.FullName);
 
-                animationInfo.animationName = Path.GetFileName(info.FullName);
+                animationInfo.animationName = Path.GetFileNameWithoutExtension(info.FullName);
 
                 RectTransform content = StaticRefrences.Instance.TabArea.GetComponent<ScrollRect>().content;
                 RectTransform tabArea = StaticRefrences.Instance.TabArea.GetComponent<RectTransform>();
@@ -91,6 +93,7 @@ public class OnImportImagesPressed : MonoBehaviour
             FileInfo[] files = info.Directory.GetFiles(animationName + "*.png");
            
             GaeAnimationInfo animationInfo = new GaeAnimationInfo();
+            animationInfo.AnimationDirectory = info.DirectoryName;
 
             animationInfo.frames = new FrameInfo[files.Length];
             for (int i = 0; i < animationInfo.frames.Length; i++)
@@ -178,19 +181,19 @@ public class OnImportImagesPressed : MonoBehaviour
                         if ((frameJsonInfo.attachPoints[i] as AttachPoint).name == "PrimaryHand")
                         {
                             AttachPoint hand1 = frameJsonInfo.attachPoints[i] as AttachPoint;
-                            convertedX1 = hand1.position.x * 16;
-                            convertedY1 = hand1.position.y * 16;
+                            convertedX1 = hand1.position.x * 16 - frameJsonInfo.x;
+                            convertedY1 = hand1.position.y * 16 - frameJsonInfo.y;
                         }
                         else if((frameJsonInfo.attachPoints[i] as AttachPoint).name == "SecondaryHand")
                         {
                             AttachPoint hand2 = frameJsonInfo.attachPoints[i] as AttachPoint;
-                            convertedX2 = hand2.position.x * 16;
-                            convertedY2 = hand2.position.y * 16;
+                            convertedX2 = hand2.position.x * 16 - frameJsonInfo.x;
+                            convertedY2 = hand2.position.y * 16 - frameJsonInfo.y;
                             isTwoHanded = true;
                         }
                     }
                 }
-                return new FrameInfo(tex, sprite, convertedX1, convertedY1, convertedX2, convertedY2, frameJsonInfo.x, frameJsonInfo.x, isTwoHanded, path);
+                return new FrameInfo(tex, sprite, convertedX1, convertedY1, convertedX2, convertedY2, frameJsonInfo.x, frameJsonInfo.y, isTwoHanded, path);
             }
             catch (Exception)
             {
@@ -199,6 +202,7 @@ public class OnImportImagesPressed : MonoBehaviour
         }
         return new FrameInfo(tex, sprite , pngPath);
     }
+   
 
 
 

@@ -38,6 +38,10 @@ public class TabDisplay : MonoBehaviour
 
     public void OnXClicked()
     {
+        if (MainSpriteController.instance.currentAnimation == animationInfo)
+        {
+            MainSpriteController.instance.SetAnimation(null);
+        }
         Destroy(gameObject);
     }
 

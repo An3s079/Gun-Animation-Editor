@@ -45,8 +45,8 @@ public class HandController : MonoBehaviour, IDragHandler,IBeginDragHandler,IEnd
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
         Vector2 position = rectTransform.anchoredPosition;
-        int roundX = Mathf.RoundToInt(position.x / 10) * 10;
-        int roundY = Mathf.RoundToInt(position.y / 10) * 10;
+        int roundX = Mathf.RoundToInt(position.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+        int roundY = Mathf.RoundToInt(position.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
         position = new Vector2(roundX,roundY);
         rectTransform.anchoredPosition = position;
         MainSpriteController.instance.UpdateCurrentFrameHandData();

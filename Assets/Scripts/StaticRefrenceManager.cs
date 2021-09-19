@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public static class StaticRefrences
 {
     private static StaticRefrenceManager instance;
-
+    public static int zoomScale = 10;
     public static StaticRefrenceManager Instance
     {
+
         get
         {
             if (instance == null)
@@ -29,7 +30,8 @@ public class StaticRefrenceManager : MonoBehaviour
     public RawImage handIMG2;
     public Image MainSprite;
     public RawImage BackgroundImage;
-    public MainSpriteController spriteController;
+    public MainSpriteController spriteController; 
+    
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);

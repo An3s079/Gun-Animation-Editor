@@ -573,7 +573,6 @@ GameObject:
   - component: {fileID: 233551736}
   - component: {fileID: 233551735}
   - component: {fileID: 233551734}
-  - component: {fileID: 233551738}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -683,23 +682,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &233551738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 233551733}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c02e0b0b9fc1a48b7db0faeb6335bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SettingPos: 0
-  onImportImagesPressed: {fileID: 390136030}
-  hand1: {fileID: 1339299365}
-  hand2: {fileID: 1134486995}
-  canvas: {fileID: 1836759162}
 --- !u!1 &235959928
 GameObject:
   m_ObjectHideFlags: 0
@@ -2479,7 +2461,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 588230323}
         m_TargetAssemblyTypeName: JsonGenerator, Assembly-CSharp
-        m_MethodName: OnCreateJsonPressed
+        m_MethodName: GenerateOffsetCode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2739,6 +2721,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 666470121}
+  - component: {fileID: 666470122}
   m_Layer: 0
   m_Name: MasterManager
   m_TagString: Untagged
@@ -2760,6 +2743,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &666470122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666470120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c19a4a8fa9b75a74084352cfcdac5efd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Resizeables:
+  - {fileID: 601131753}
+  - {fileID: 1339299366}
+  - {fileID: 1134486996}
+  - {fileID: 1147032928}
 --- !u!1 &705014585
 GameObject:
   m_ObjectHideFlags: 0
@@ -3073,7 +3073,6 @@ GameObject:
   - component: {fileID: 781934986}
   - component: {fileID: 781934985}
   - component: {fileID: 781934984}
-  - component: {fileID: 781934987}
   m_Layer: 5
   m_Name: TwoHandToggle
   m_TagString: Untagged
@@ -3293,18 +3292,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 0
---- !u!114 &781934987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 781934982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfa591ded0b18fe469f13c7facdb55a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &784040366
 GameObject:
   m_ObjectHideFlags: 0
@@ -4050,7 +4037,6 @@ GameObject:
   - component: {fileID: 891210709}
   - component: {fileID: 891210708}
   - component: {fileID: 891210707}
-  - component: {fileID: 891210706}
   m_Layer: 5
   m_Name: CanvasToggle
   m_TagString: Untagged
@@ -4079,18 +4065,6 @@ RectTransform:
   m_AnchoredPosition: {x: 929, y: 54}
   m_SizeDelta: {x: 300, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &891210706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 891210704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfa591ded0b18fe469f13c7facdb55a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &891210707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4693,7 +4667,6 @@ GameObject:
   - component: {fileID: 1134486998}
   - component: {fileID: 1134487000}
   - component: {fileID: 1134486997}
-  - component: {fileID: 1134487001}
   m_Layer: 5
   m_Name: Hand2
   m_TagString: Untagged
@@ -4798,18 +4771,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.9872694, y: 3.992664}
   m_EdgeRadius: 0
---- !u!114 &1134487001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1134486995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40259fe5696cd7c4683b67dbc698f3a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1138792080
 GameObject:
   m_ObjectHideFlags: 0
@@ -5525,7 +5486,6 @@ GameObject:
   - component: {fileID: 1331533327}
   - component: {fileID: 1331533326}
   - component: {fileID: 1331533325}
-  - component: {fileID: 1331533324}
   m_Layer: 5
   m_Name: HandSwitcher
   m_TagString: Untagged
@@ -5554,19 +5514,6 @@ RectTransform:
   m_AnchoredPosition: {x: 881.21045, y: 497}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1331533324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1331533322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc2fb578b29de9143857e0866bcbeb66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onImportImages: {fileID: 390136030}
 --- !u!114 &1331533325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5745,7 +5692,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1331533324}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SwitchHands, Assembly-CSharp
         m_MethodName: OnSwitchHands
         m_Mode: 1
@@ -6894,7 +6841,6 @@ GameObject:
   - component: {fileID: 1685813420}
   - component: {fileID: 1685813419}
   - component: {fileID: 1685813418}
-  - component: {fileID: 1685813417}
   m_Layer: 5
   m_Name: UIToggle
   m_TagString: Untagged
@@ -6923,18 +6869,6 @@ RectTransform:
   m_AnchoredPosition: {x: 947, y: -512}
   m_SizeDelta: {x: 300, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1685813417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1685813415}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfa591ded0b18fe469f13c7facdb55a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1685813418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7936,7 +7870,6 @@ GameObject:
   - component: {fileID: 1877393801}
   - component: {fileID: 1877393800}
   - component: {fileID: 1877393799}
-  - component: {fileID: 1877393798}
   m_Layer: 5
   m_Name: GridToggle
   m_TagString: Untagged
@@ -7965,18 +7898,6 @@ RectTransform:
   m_AnchoredPosition: {x: 929, y: 120}
   m_SizeDelta: {x: 300, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1877393798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877393796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfa591ded0b18fe469f13c7facdb55a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1877393799
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -73,16 +73,16 @@ public class MainSpriteController : MonoBehaviour
             RawImage hand1 = StaticRefrences.Instance.handIMG;
             RawImage hand2 = StaticRefrences.Instance.handIMG2;
             FrameInfo info = currentFrame;
-            info.hand1PositionX = (hand1.rectTransform.anchoredPosition.x - mainSprite.rectTransform.anchoredPosition.x) / 10;
-            info.hand1PositionY = (hand1.rectTransform.anchoredPosition.y - mainSprite.rectTransform.anchoredPosition.y) / 10;
-            info.hand2PositionX = (hand2.rectTransform.anchoredPosition.x - mainSprite.rectTransform.anchoredPosition.x) / 10;
-            info.hand2PositionY = (hand2.rectTransform.anchoredPosition.y - mainSprite.rectTransform.anchoredPosition.y) / 10;
+            info.hand1PositionX = (hand1.rectTransform.anchoredPosition.x - mainSprite.rectTransform.anchoredPosition.x) / StaticRefrences.zoomScale;
+            info.hand1PositionY = (hand1.rectTransform.anchoredPosition.y - mainSprite.rectTransform.anchoredPosition.y) / StaticRefrences.zoomScale;
+            info.hand2PositionX = (hand2.rectTransform.anchoredPosition.x - mainSprite.rectTransform.anchoredPosition.x) / StaticRefrences.zoomScale;
+            info.hand2PositionY = (hand2.rectTransform.anchoredPosition.y - mainSprite.rectTransform.anchoredPosition.y) / StaticRefrences.zoomScale;
             float.TryParse(xOffset.text,out info.offsetX);
             float.TryParse(yOffset.text,out info.offsetY);
             info.isTwoHanded = StaticRefrences.Instance.IsTwoHanded.isOn;
         }
     }
-    private void UpdateSprite()
+    public void UpdateSprite()
     {
         if (currentAnimation != null && currentFrame!= null)
         {
@@ -91,12 +91,12 @@ public class MainSpriteController : MonoBehaviour
             yOffset.text = currentFrame.offsetY.ToString("F4", culture); ;
             mainSprite.SetNativeSize();
             Vector2 anchoredPos = mainSprite.rectTransform.anchoredPosition;
-            Vector2 pos = new Vector2(-mainSprite.sprite.rect.width / 2 * 10, -mainSprite.sprite.rect.height / 2 * 10);
-            pos = new Vector2(Mathf.Round(pos.x / 10f) * 10, Mathf.Round(pos.y / 10f) * 10);
+            Vector2 pos = new Vector2(-mainSprite.sprite.rect.width / 2 * StaticRefrences.zoomScale, -mainSprite.sprite.rect.height / 2 * StaticRefrences.zoomScale);
+            pos = new Vector2(Mathf.Round(pos.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale, Mathf.Round(pos.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale);
             mainSprite.rectTransform.anchoredPosition = pos;
             
-            Vector2 handpos1 = new Vector2(pos.x + currentFrame.hand1PositionX * 10, pos.y + currentFrame.hand1PositionY * 10);
-            Vector2 handpos2 = new Vector2(pos.x + currentFrame.hand2PositionX * 10, pos.y + currentFrame.hand2PositionY * 10);
+            Vector2 handpos1 = new Vector2(pos.x + currentFrame.hand1PositionX * StaticRefrences.zoomScale, pos.y + currentFrame.hand1PositionY * StaticRefrences.zoomScale);
+            Vector2 handpos2 = new Vector2(pos.x + currentFrame.hand2PositionX * StaticRefrences.zoomScale, pos.y + currentFrame.hand2PositionY * StaticRefrences.zoomScale);
             
             StaticRefrences.Instance.handIMG.rectTransform.anchoredPosition = handpos1;
             StaticRefrences.Instance.handIMG2.rectTransform.anchoredPosition = handpos2;

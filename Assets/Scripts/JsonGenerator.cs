@@ -1,10 +1,10 @@
-﻿using System.Globalization;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 
 
 public enum Axis
@@ -59,40 +59,97 @@ public class JsonGenerator : MonoBehaviour
         return objectValue;
     }
 
+    public void OnCreateJsonAnimationPressed()
+    {
+        for (int i = 0; i < MainSpriteController.instance.currentAnimation.frames.Length; i++)
+        {
+            string data;
+            FrameInfo frameInfo = MainSpriteController.instance.currentAnimation.frames[i];
+            FrameJsonInfo frameJsonInfo = new FrameJsonInfo();
+
+
+            frameJsonInfo.x = frameInfo.offsetX;
+            frameJsonInfo.y = frameInfo.offsetY;
+            frameJsonInfo.width = frameInfo.texture.width;
+            frameJsonInfo.height = frameInfo.texture.height;
+
+            List<object> attachPoints = new List<object>();
+            ArrayTypeUnkownAndSize iHonestlyDontKnowWhatToCallThisThing = new ArrayTypeUnkownAndSize(twoHandToggle.isOn ? 3 : 4);
+            attachPoints.Add(iHonestlyDontKnowWhatToCallThisThing);
+
+            var primaryHandX = (frameInfo.hand1PositionX + frameInfo.offsetX) / 16;
+            var primaryHandY = (frameInfo.hand1PositionY + frameInfo.offsetY) / 16;
+            attachPoints.Add(new AttachPoint("SecondaryHand", new PositionVector(primaryHandX, primaryHandY)));
+
+            if (frameInfo.isTwoHanded)
+            {
+                var secondaryHandX = (frameInfo.hand2PositionX + frameInfo.offsetX) / 16;
+                var secondaryHandY = (frameInfo.hand2PositionY + frameInfo.offsetY) / 16;
+                attachPoints.Add(new AttachPoint("SecondaryHand", new PositionVector(secondaryHandX, secondaryHandY)));
+            }
+
+            attachPoints.Add(new AttachPoint("Clip", new PositionVector(0.5625f, 0.375f)));
+            attachPoints.Add(new AttachPoint("Casing", new PositionVector(0.5625f, 0.375f)));
+
+            frameJsonInfo.attachPoints = attachPoints.ToArray();
+
+
+            data = JsonConvert.SerializeObject(frameJsonInfo);
+
+
+            if (!string.IsNullOrEmpty(frameInfo.path))
+            {
+                File.WriteAllText(FilePath.Replace(".png", ".json"), data);
+                Debug.Log("nice, it (should have) worked");
+                onImportImagesPressedComponent.SelectedTab.JsonHasBeenGenerated = true;
+            }
+            else
+            {
+                Debug.LogError("Shit, path was empty!");
+            }
+        }
+        
+    }
     public void OnCreateJsonPressed()
     {
         string data;
         var xOffsetValue = float.Parse(xOffset.text);
         var yOffsetValue = float.Parse(xOffset.text);
 
-        FrameJsonInfo frameInfo = new FrameJsonInfo();
+        FrameInfo frameInfo = MainSpriteController.instance.currentFrame;
+        FrameJsonInfo frameJsonInfo = new FrameJsonInfo();
 
-        
+
+        frameJsonInfo.x = frameInfo.offsetX;
+        frameJsonInfo.y = frameInfo.offsetY;
+        frameJsonInfo.width = frameInfo.texture.width;
+        frameJsonInfo.height = frameInfo.texture.height;
+
         List<object> attachPoints = new List<object>();
-        ArrayTypeUnkownAndSize iHonestlyDontKnowWhatToCallThisThing = new ArrayTypeUnkownAndSize(twoHandToggle.isOn ? 2 : 3);
+        ArrayTypeUnkownAndSize iHonestlyDontKnowWhatToCallThisThing = new ArrayTypeUnkownAndSize(twoHandToggle.isOn ? 3 : 4);
         attachPoints.Add(iHonestlyDontKnowWhatToCallThisThing);
 
-        var primaryHandX = DoTheMath(this.transform, primaryHand, Axis.X, xOffsetValue);
-        var primaryHandY = DoTheMath(this.transform, primaryHand, Axis.Y, yOffsetValue);
-        attachPoints.Add(new AttachPoint(new PositionVector(primaryHandX, primaryHandY)));
+        var primaryHandX = (frameInfo.hand1PositionX + frameInfo.offsetX) / 16;
+        var primaryHandY = (frameInfo.hand1PositionY + frameInfo.offsetY) / 16;
+        attachPoints.Add(new AttachPoint("SecondaryHand", new PositionVector(primaryHandX, primaryHandY)));
 
-            
-        if(twoHandToggle.isOn)
+        if (frameInfo.isTwoHanded)
         {
-            var secondaryHandX = DoTheMath(this.transform, secondaryHand, Axis.X, xOffsetValue);
-            var secondaryHandY = DoTheMath(this.transform, secondaryHand, Axis.Y, yOffsetValue);
-            attachPoints.Add(new AttachPoint(new PositionVector(secondaryHandX, secondaryHandY)));
+            var secondaryHandX = (frameInfo.hand2PositionX + frameInfo.offsetX) / 16;
+            var secondaryHandY = (frameInfo.hand2PositionY + frameInfo.offsetY) / 16;
+            attachPoints.Add(new AttachPoint("SecondaryHand", new PositionVector(secondaryHandX, secondaryHandY)));
         }
 
-        attachPoints.Add(new AttachPoint(new PositionVector(0.5625f, 0.375f)));
+        attachPoints.Add(new AttachPoint("Clip", new PositionVector(0.5625f, 0.375f)));
+        attachPoints.Add(new AttachPoint("Casing", new PositionVector(0.5625f, 0.375f)));
 
-        frameInfo.attachPoints = attachPoints.ToArray();
-        
-        
-        data = JsonConvert.SerializeObject(frameInfo);
+        frameJsonInfo.attachPoints = attachPoints.ToArray();
 
 
-        if (!string.IsNullOrEmpty(FilePath))
+        data = JsonConvert.SerializeObject(frameJsonInfo);
+
+
+        if (!string.IsNullOrEmpty(frameInfo.path))
         {
             File.WriteAllText(FilePath.Replace(".png", ".json"), data);
             Debug.Log("nice, it (should have) worked");
@@ -102,69 +159,10 @@ public class JsonGenerator : MonoBehaviour
         {
             Debug.LogError("Shit, path was empty!");
         }
-        
+
     }
 
     private void Update()
     {
-        /*if (onImportImagesPressedComponent.SelectedTab != null)
-        {
-            CheckMark.SetActive(onImportImagesPressedComponent.SelectedTab.JsonHasBeenGenerated);
-        }*/
     }
 }
-/*=
-                    "\n{" +
-                "\n\"name\": null," +
-              "\n\"x\": 0," +
-              "\n\"y\": 0," +
-              "\n\"width\": 10," +
-              "\n\"height\": 24," +
-              "\n\"flip\": 1," +
-              "\n\"attachPoints\": [" +
-                "\n{" +
-                "\n  \".\": \"arraytype\"," +
-                "\n  \"name\": \"array\"," +
-                "\n  \"size\": 4" +
-                "\n}," +
-                "\n{" +
-                "\n  \"name\": \"PrimaryHand\"," +
-                "\n  \"position\": {" +
-               $"\n  \"x\": {primaryHandXString}," +
-               $"\n  \"y\": {primaryHandYString}," +
-               $"\n  \"z\": 0.0" +
-                "\n  }," +
-                "\n  \"angle\": 0.0" +
-                "\n}," +
-                "\n{" +
-                "\n  \"name\": \"SecondaryHand\"," +
-                "\n  \"position\": {" +
-               $"\n    \"x\": {secondaryHandXString}," +
-               $"\n    \"y\": {secondaryHandYString}," +
-                "\n    \"z\": 0.0" +
-                "\n  }," +
-                "\n  \"angle\": 0.0" +
-                "\n}," +
-                "\n{" +
-                "\n  \"name\": \"Clip\"," +
-                "\n  \"position\": {" +
-                "\n    \"x\": 0.625," +
-                "\n    \"y\": 0.125," +
-                "\n    \"z\": 0.0" +
-                "\n  }," +
-                "\n  \"angle\": 0.0" +
-                "\n}," +
-                "\n{" +
-                "\n  \"name\": \"Casing\"," +
-                "\n  \"position\": {" +
-                "\n    \"x\": 0.5625," +
-                "\n    \"y\": 0.375," +
-                "\n    \"z\": 0.0" +
-                "\n  }," +
-                "\n  \"angle\": 0.0" +
-                "\n}" +
-              "\n]" +
-            "\n}";
-
-            Debug.Log(dataTwoHanded);
-*/

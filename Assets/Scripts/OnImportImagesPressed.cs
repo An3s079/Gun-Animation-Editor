@@ -151,35 +151,53 @@ public class OnImportImagesPressed : MonoBehaviour
             {
                 string jsonInfo = File.ReadAllText(jsonPath);
                 FrameJsonInfo frameJsonInfo = JsonConvert.DeserializeObject<FrameJsonInfo>(jsonInfo);
-                frameJsonInfo.attachPoints[0] = (frameJsonInfo.attachPoints[0] as Newtonsoft.Json.Linq.JObject).ToObject<ArrayTypeUnkownAndSize>();
+              
                 for (int i = 1; i < frameJsonInfo.attachPoints.Length; i++)
                 {
-                    frameJsonInfo.attachPoints[i] = (frameJsonInfo.attachPoints[i] as Newtonsoft.Json.Linq.JObject).ToObject<AttachPoint>();
+                    try
+                    {
+                        frameJsonInfo.attachPoints[i] = (frameJsonInfo.attachPoints[i] as Newtonsoft.Json.Linq.JObject).ToObject<ArrayTypeUnkownAndSize>();
+                    }
+                    catch (Exception){}
+                    try
+                    {
+                        frameJsonInfo.attachPoints[i] = (frameJsonInfo.attachPoints[i] as Newtonsoft.Json.Linq.JObject).ToObject<AttachPoint>();
+                    }
+                    catch (Exception){}
                 }
-                if (frameJsonInfo.attachPoints.Length == 3)
+                float convertedX1 = 0;
+                float convertedX2 = 0;
+                float convertedY1 = 0;
+                float convertedY2 = 0;
+                bool isTwoHanded = false;
+                for (int i = 0; i < frameJsonInfo.attachPoints.Length; i++)
                 {
-                    AttachPoint hand1 = frameJsonInfo.attachPoints[1] as AttachPoint;
-                    float convertedX1 = hand1.position.x * 16;
-                    float convertedY1 = hand1.position.y * 16;
-                    return new FrameInfo(tex, sprite, convertedX1, convertedY1, 0, 0, frameJsonInfo.x, frameJsonInfo.x, false, path);
+                    if (frameJsonInfo.attachPoints[i] is AttachPoint)
+                    {
+                        Debug.Log("wot");
+                        if ((frameJsonInfo.attachPoints[i] as AttachPoint).name == "PrimaryHand")
+                        {
+                            AttachPoint hand1 = frameJsonInfo.attachPoints[i] as AttachPoint;
+                            convertedX1 = hand1.position.x * 16;
+                            convertedY1 = hand1.position.y * 16;
+                        }
+                        else if((frameJsonInfo.attachPoints[i] as AttachPoint).name == "SecondaryHand")
+                        {
+                            AttachPoint hand2 = frameJsonInfo.attachPoints[i] as AttachPoint;
+                            convertedX2 = hand2.position.x * 16;
+                            convertedY2 = hand2.position.y * 16;
+                            isTwoHanded = true;
+                        }
+                    }
                 }
-                if (frameJsonInfo.attachPoints.Length == 4)
-                {
-                    AttachPoint hand1 = frameJsonInfo.attachPoints[1] as AttachPoint;
-                    AttachPoint hand2 = frameJsonInfo.attachPoints[2] as AttachPoint;
-                    float convertedX1 = hand1.position.x * 16;
-                    float convertedY1 = hand1.position.y * 16;
-                    float convertedX2 = hand2.position.x * 16;
-                    float convertedY2 = hand2.position.y * 16;
-                    return new FrameInfo(tex, sprite, convertedX1, convertedY1, convertedX2, convertedY2, frameJsonInfo.x, frameJsonInfo.x, true,path);
-                }
+                return new FrameInfo(tex, sprite, convertedX1, convertedY1, convertedX2, convertedY2, frameJsonInfo.x, frameJsonInfo.x, isTwoHanded, path);
             }
             catch (Exception)
             {
                 throw new Exception("json seems to be invalid! or i dont know how to read jsons!");
             }
         }
-        return new FrameInfo(tex, sprite , path);
+        return new FrameInfo(tex, sprite , pngPath);
     }
 
 

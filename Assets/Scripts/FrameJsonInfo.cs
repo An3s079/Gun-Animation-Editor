@@ -13,27 +13,39 @@ public class FrameJsonInfo
     public float y;
     public int width;
     public int height;
-    public int flip;
+    public int flip = 1;
     public object[] attachPoints = { new ArrayTypeUnkownAndSize(), new AttachPoint(), new AttachPoint() }; 
 
     public FrameJsonInfo() { }
 }
 public class AttachPoint
 {
+    [JsonRequiredAttribute]
     public string name;
+    [JsonRequiredAttribute]
     public PositionVector position;
+    [JsonRequiredAttribute]
     public float angle;
     public AttachPoint() { }
     public AttachPoint(PositionVector position)
     {
         this.position = position;
     }
+    public AttachPoint(string name, PositionVector position)
+    {
+
+        this.name = name;
+        this.position = position;
+    }
 }
 public class ArrayTypeUnkownAndSize
 {
+    [JsonRequiredAttribute]
     [JsonProperty(".")]
     public string dot = "arraytype";
+    [JsonRequiredAttribute]
     public string name = "array";
+    [JsonRequiredAttribute]
     public int size = 2;
     public ArrayTypeUnkownAndSize() { }
     public ArrayTypeUnkownAndSize(int size) 
@@ -44,8 +56,11 @@ public class ArrayTypeUnkownAndSize
 }
 public class PositionVector
 {
+    [JsonRequiredAttribute]
     public float x = 0;
+    [JsonRequiredAttribute]
     public float y = 0;
+    [JsonRequiredAttribute]
     public float z = 0;
     public PositionVector() { }
     public PositionVector(float x, float y)

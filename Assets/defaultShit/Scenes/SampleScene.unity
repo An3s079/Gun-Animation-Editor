@@ -6833,6 +6833,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainSprite: {fileID: 601131754}
+  xOffset: {fileID: 321881841}
+  yOffset: {fileID: 855259146}
 --- !u!1 &1840423237
 GameObject:
   m_ObjectHideFlags: 0
@@ -7489,6 +7491,10 @@ PrefabInstance:
     - target: {fileID: 1388504622680262545, guid: 954ba9ec91c0d2044b1bb4a7e0d970d5, type: 3}
       propertyPath: m_MovementType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1388504622680262545, guid: 954ba9ec91c0d2044b1bb4a7e0d970d5, type: 3}
+      propertyPath: m_ScrollSensitivity
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1388504622680262545, guid: 954ba9ec91c0d2044b1bb4a7e0d970d5, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size

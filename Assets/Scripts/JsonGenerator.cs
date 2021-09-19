@@ -99,7 +99,7 @@ public class JsonGenerator : MonoBehaviour
 
             if (!string.IsNullOrEmpty(frameInfo.path))
             {
-                File.WriteAllText(FilePath.Replace(".png", ".json"), data);
+                File.WriteAllText(frameInfo.path.Replace(".png", ".json"), data);
                 Debug.Log("nice, it (should have) worked");
                 onImportImagesPressedComponent.SelectedTab.JsonHasBeenGenerated = true;
             }

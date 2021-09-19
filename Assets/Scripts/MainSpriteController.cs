@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
+using System.Globalization;
 
 public class MainSpriteController : MonoBehaviour
 {
@@ -11,8 +12,14 @@ public class MainSpriteController : MonoBehaviour
     private int index = 0;
 
     public static MainSpriteController instance;
+    [SerializeField]
+    private TMP_InputField xOffset;
 
-    
+    [SerializeField]
+    private TMP_InputField yOffset;
+
+    private static readonly CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+
     public void SetAnimation(GaeAnimationInfo animation)
     {
         currentAnimationInfo = animation;
@@ -70,6 +77,8 @@ public class MainSpriteController : MonoBehaviour
             info.hand1PositionY = (hand1.rectTransform.anchoredPosition.y - mainSprite.rectTransform.anchoredPosition.y) / 10;
             info.hand2PositionX = (hand2.rectTransform.anchoredPosition.x - mainSprite.rectTransform.anchoredPosition.x) / 10;
             info.hand2PositionY = (hand2.rectTransform.anchoredPosition.y - mainSprite.rectTransform.anchoredPosition.y) / 10;
+            info.offsetX = float.Parse(xOffset.text);
+            info.offsetY = float.Parse(xOffset.text);
         }
     }
     private void UpdateSprite()
@@ -77,6 +86,8 @@ public class MainSpriteController : MonoBehaviour
         if (currentAnimation != null && currentFrame!= null)
         {
             mainSprite.sprite = currentAnimationInfo.frames[index].sprite;
+            xOffset.text = currentFrame.offsetX.ToString("F4", culture); ;
+            yOffset.text = currentFrame.offsetY.ToString("F4", culture); ;
             mainSprite.SetNativeSize();
             Vector2 anchoredPos = mainSprite.rectTransform.anchoredPosition;
             Vector2 pos = new Vector2(-mainSprite.sprite.rect.width / 2 * 10, -mainSprite.sprite.rect.height / 2 * 10);

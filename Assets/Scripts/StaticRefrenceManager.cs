@@ -26,6 +26,8 @@ public class StaticRefrenceManager : MonoBehaviour
     public GameObject TabArea;
     public GameObject scrollthing;
     public Toggle IsTwoHanded;
+    public Toggle IsGungeoneerOn;
+    public RectTransform Gungeoneer;
     public RawImage handIMG;
     public RawImage handIMG2;
     public Image MainSprite;

@@ -91,8 +91,17 @@ public class MainSpriteController : MonoBehaviour
             yOffset.text = currentFrame.offsetY.ToString("F4", culture); ;
             mainSprite.SetNativeSize();
             Vector2 anchoredPos = mainSprite.rectTransform.anchoredPosition;
+            
             Vector2 pos = new Vector2(-mainSprite.sprite.rect.width / 2 * StaticRefrences.zoomScale, -mainSprite.sprite.rect.height / 2 * StaticRefrences.zoomScale);
+            
             pos = new Vector2(Mathf.Round(pos.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale, Mathf.Round(pos.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale);
+
+            if (StaticRefrences.Instance.IsGungeoneerOn.isOn)
+            {
+                pos = StaticRefrences.Instance.Gungeoneer.anchoredPosition;
+                pos = new Vector2(pos.x + currentFrame.offsetX* StaticRefrences.zoomScale, pos.y + currentFrame.offsetY* StaticRefrences.zoomScale);
+            }
+
             mainSprite.rectTransform.anchoredPosition = pos;
             
             Vector2 handpos1 = new Vector2(pos.x + currentFrame.hand1PositionX * StaticRefrences.zoomScale, pos.y + currentFrame.hand1PositionY * StaticRefrences.zoomScale);

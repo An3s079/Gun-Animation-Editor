@@ -53,7 +53,7 @@ public class OnImportImagesPressed : MonoBehaviour
 
                 animationInfo.frames = new FrameInfo[1];
                 
-                animationInfo.frames[0] = LoadSingleFrame(info.FullName);
+                animationInfo.frames[0] = LoadSingleFrame(info.FullName,animationInfo);
 
                 animationInfo.animationName = Path.GetFileNameWithoutExtension(info.FullName);
 
@@ -98,7 +98,7 @@ public class OnImportImagesPressed : MonoBehaviour
             animationInfo.frames = new FrameInfo[files.Length];
             for (int i = 0; i < animationInfo.frames.Length; i++)
             {
-                animationInfo.frames[i] = LoadSingleFrame(files[i].FullName);
+                animationInfo.frames[i] = LoadSingleFrame(files[i].FullName,animationInfo);
             }
             animationInfo.animationName = RemoveTrailingDigits(Path.GetFileNameWithoutExtension(files[0].FullName));
             Debug.Log(animationInfo.animationName);
@@ -133,7 +133,7 @@ public class OnImportImagesPressed : MonoBehaviour
         }
         return path.Substring(0, firstNumberIndex);
     }
-    private FrameInfo LoadSingleFrame(string path)
+    private FrameInfo LoadSingleFrame(string path,GaeAnimationInfo animationInfo)
     {
         path = System.IO.Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));
        
@@ -193,14 +193,14 @@ public class OnImportImagesPressed : MonoBehaviour
                         }
                     }
                 }
-                return new FrameInfo(tex, sprite, convertedX1, convertedY1, convertedX2, convertedY2, frameJsonInfo.x, frameJsonInfo.y, isTwoHanded, path);
+                return new FrameInfo(tex, sprite, convertedX1, convertedY1, convertedX2, convertedY2, frameJsonInfo.x, frameJsonInfo.y, isTwoHanded, path,animationInfo);
             }
             catch (Exception)
             {
                 throw new Exception("json seems to be invalid! or i dont know how to read jsons!");
             }
         }
-        return new FrameInfo(tex, sprite , pngPath);
+        return new FrameInfo(tex, sprite , pngPath,animationInfo);
     }
    
 

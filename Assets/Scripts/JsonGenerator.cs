@@ -85,7 +85,7 @@ public class JsonGenerator : MonoBehaviour
         frameJsonInfo.height = frameInfo.texture.height;
 
         List<object> attachPoints = new List<object>();
-        ArrayTypeUnkownAndSize iHonestlyDontKnowWhatToCallThisThing = new ArrayTypeUnkownAndSize(twoHandToggle.isOn ? 3 : 4);
+        ArrayTypeUnkownAndSize iHonestlyDontKnowWhatToCallThisThing = new ArrayTypeUnkownAndSize(twoHandToggle.isOn ? 4 : 3);
         attachPoints.Add(iHonestlyDontKnowWhatToCallThisThing);
 
         var primaryHandX = (frameInfo.hand1PositionX + frameInfo.offsetX) / 16;

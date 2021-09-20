@@ -9,8 +9,9 @@ using UnityEditor;
 
 public class FrameInfo
 {
-    public FrameInfo(Texture2D texture , string path)
+    public FrameInfo(Texture2D texture , string path, GaeAnimationInfo animationInfo)
     {
+        this.animationInfo = animationInfo;
         this.texture = texture;
         this.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 1);
         this.path = path;
@@ -22,8 +23,9 @@ public class FrameInfo
         this.offsetY = 0;
         this.isTwoHanded = false;
     }
-    public FrameInfo(Texture2D texture, Sprite sprite, string path)
+    public FrameInfo(Texture2D texture, Sprite sprite, string path, GaeAnimationInfo animationInfo)
     {
+        this.animationInfo = animationInfo;
         this.texture = texture;
         this.sprite = sprite;
         this.path = path;
@@ -34,9 +36,11 @@ public class FrameInfo
         this.offsetX = 0;
         this.offsetY = 0;
         this.isTwoHanded = false;
+       
     }
-    public FrameInfo(Texture2D texture, Sprite sprite, float hand1X, float hand1Y, float hand2X, float hand2Y, float offsetX, float offsetY, bool isTwoHanded,string path)
+    public FrameInfo(Texture2D texture, Sprite sprite, float hand1X, float hand1Y, float hand2X, float hand2Y, float offsetX, float offsetY, bool isTwoHanded,string path , GaeAnimationInfo animationInfo)
     {
+        this.animationInfo = animationInfo;
         this.texture = texture;
         this.sprite = sprite;
         this.hand1PositionX = hand1X;
@@ -57,6 +61,19 @@ public class FrameInfo
     public float hand1PositionY;
     public float hand2PositionX;
     public float hand2PositionY;
-    public bool isTwoHanded;
+    public bool isTwoHanded
+    {
+        get
+        {
+            return animationInfo.IsTwoHanded;
+        }
+        set 
+        {
+            animationInfo.IsTwoHanded = value;
+        }
+    }
+
+
+    public GaeAnimationInfo animationInfo;
 }
 

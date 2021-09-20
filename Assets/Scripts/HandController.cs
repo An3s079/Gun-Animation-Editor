@@ -50,6 +50,6 @@ public class HandController : MonoBehaviour, IDragHandler,IBeginDragHandler,IEnd
         position = new Vector2(roundX,roundY);
         rectTransform.anchoredPosition = position;
         MainSpriteController.instance.UpdateCurrentFrameHandData();
-        MainSpriteController.instance.UpdateSprite();
+        MainSpriteController.instance.UpdateSprite(true);
     }
 }

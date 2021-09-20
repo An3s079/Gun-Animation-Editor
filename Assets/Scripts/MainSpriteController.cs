@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Globalization;
 
+
 public class MainSpriteController : MonoBehaviour
 {
     public Image mainSprite;
@@ -18,13 +19,16 @@ public class MainSpriteController : MonoBehaviour
     [SerializeField]
     private TMP_InputField yOffset;
 
+    [SerializeField]
+    private TextMeshProUGUI frameCounter;
+
     private static readonly CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
 
     public void SetAnimation(GaeAnimationInfo animation)
     {
         currentAnimationInfo = animation;
         index = 0;
-        UpdateSprite();
+        UpdateSprite(true);
         if (animation == null)
         {
             mainSprite.sprite = null;
@@ -62,7 +66,7 @@ public class MainSpriteController : MonoBehaviour
                 index = currentAnimation.frames.Length - 1;
             }
             
-            UpdateSprite();
+            UpdateSprite(true);
         }       
     }
     public void UpdateCurrentFrameHandData()
@@ -82,13 +86,17 @@ public class MainSpriteController : MonoBehaviour
             info.isTwoHanded = StaticRefrences.Instance.IsTwoHanded.isOn;
         }
     }
-    public void UpdateSprite()
+    public void UpdateSprite(bool UpdateInputLabels)
     {
         if (currentAnimation != null && currentFrame!= null)
         {
             mainSprite.sprite = currentAnimationInfo.frames[index].sprite;
-            xOffset.text = currentFrame.offsetX.ToString("F4", culture); ;
-            yOffset.text = currentFrame.offsetY.ToString("F4", culture); ;
+            if (UpdateInputLabels)
+            {
+                xOffset.text = currentFrame.offsetX.ToString("F4", culture); 
+                yOffset.text = currentFrame.offsetY.ToString("F4", culture); 
+            }
+            
             mainSprite.SetNativeSize();
             Vector2 anchoredPos = mainSprite.rectTransform.anchoredPosition;
             
@@ -110,6 +118,11 @@ public class MainSpriteController : MonoBehaviour
             StaticRefrences.Instance.handIMG.rectTransform.anchoredPosition = handpos1;
             StaticRefrences.Instance.handIMG2.rectTransform.anchoredPosition = handpos2;
             StaticRefrences.Instance.IsTwoHanded.isOn = currentFrame.isTwoHanded;
+
+            if (frameCounter != null)
+            {
+                frameCounter.text = (index + 1).ToString();
+            }
         }
         
     }

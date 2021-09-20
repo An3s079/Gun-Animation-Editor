@@ -17,23 +17,27 @@ public class ZoomResizer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.KeypadPlus))
         {
-            Resize(StaticRefrences.zoomScale + 1);
+            Resize(1);
         }
         if (Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus))
         {
-            if (StaticRefrences.zoomScale>1)
-            {
-                Resize(StaticRefrences.zoomScale - 1);
-            }
+                Resize(-1);
+            
         }
     }
-    private void Resize(int scale)
+
+    public void Resize(int IncreaseAmount)
     {
+        int scale = IncreaseAmount + StaticRefrences.zoomScale;
+        if (scale <= 1)
+        {
+            scale = 1;
+        }
         for (int i = 0; i < Resizeables.Count; i++)
         {
             Resizeables[i].localScale = new Vector3(scale, scale, scale);
             StaticRefrences.zoomScale = scale;
-            MainSpriteController.instance.UpdateSprite();
+            MainSpriteController.instance.UpdateSprite(true);
         }
     }
 }

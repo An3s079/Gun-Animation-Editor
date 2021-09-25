@@ -15,15 +15,24 @@ public class TabDisplay : MonoBehaviour
     public Toggle IsTwoHanded;
     public GaeAnimationInfo animationInfo;
     public Texture2D texture;
+    public Image buttonImage;
 
     public string FilePath;
 
     public bool JsonHasBeenGenerated;
     public OnImportImagesPressed onImportImagesPressed;
     public JsonGenerator jsonGenerator;
+    //literally just stores animation infos
     void Start()
     {
-       
+        if (buttonImage!= null)
+        {
+            if (animationInfo?.frames?[0]?.texture!= null)
+            {
+                texture = animationInfo.frames[0].texture;
+                buttonImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 1);             
+            }
+        }
     }
 
     public void OnTabClicked()

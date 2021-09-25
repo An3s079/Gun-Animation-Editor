@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
-
+//these couple of classes represent a gun json file as directly as possible, and are used when reading and writing to jsons
 public class FrameJsonInfo
 {
     public string name = null;

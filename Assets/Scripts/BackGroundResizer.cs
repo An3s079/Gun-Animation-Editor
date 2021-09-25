@@ -13,6 +13,7 @@ public class BackGroundResizer : MonoBehaviour
     }
 
     // Update is called once per frame
+    //this method literally just takes a rectTransform and resizes it to fit the size of main sprite. used with the background sprite and grid sprite.
     void Update()
     {
         Image image = StaticRefrences.Instance.MainSprite;

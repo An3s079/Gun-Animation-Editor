@@ -6,7 +6,7 @@ using UnityEngine;
 public static class MasterManager
 {
     private static Manager instance;
-
+    //unused
     public static Manager Instance
     {
         get

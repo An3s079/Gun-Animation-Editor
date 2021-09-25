@@ -19,6 +19,8 @@ public class DragBehvaior : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     private Canvas canvas;
     [SerializeField]
     private RectTransform rectTransform;
+
+    //i think unused. probably anchor should be converted to this
     private void Start()
     {
         if (canvas == null)

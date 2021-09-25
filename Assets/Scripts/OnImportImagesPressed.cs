@@ -35,7 +35,7 @@ public class OnImportImagesPressed : MonoBehaviour
         Image.SetNativeSize();      
               //  Image.transform.localScale = new Vector3(20,20, 1);   
     }
-
+    //responsible for loading up data from computer memory.
     public void ImportSingleImages()
     {
         Image.sprite = DefaultTexture;
@@ -101,7 +101,7 @@ public class OnImportImagesPressed : MonoBehaviour
                 animationInfo.frames[i] = LoadSingleFrame(files[i].FullName,animationInfo);
             }
             animationInfo.animationName = RemoveTrailingDigits(Path.GetFileNameWithoutExtension(files[0].FullName));
-            Debug.Log(animationInfo.animationName);
+
   
             RectTransform content = StaticRefrences.Instance.TabArea.GetComponent<ScrollRect>().content;
             RectTransform tabArea = StaticRefrences.Instance.TabArea.GetComponent<RectTransform>();
@@ -157,6 +157,8 @@ public class OnImportImagesPressed : MonoBehaviour
               
                 for (int i = 1; i < frameJsonInfo.attachPoints.Length; i++)
                 {
+                    //this bit of code relies on conversion exceptions to make sure the data type is right. this only happens to class members are marked as [JsonRequiredAttribute]
+                    //this is probably really bad practice. especially since it relies on loaded objects to be of " Newtonsoft.Json.Linq.JObject" type but i dont know any better as of writing this
                     try
                     {
                         frameJsonInfo.attachPoints[i] = (frameJsonInfo.attachPoints[i] as Newtonsoft.Json.Linq.JObject).ToObject<ArrayTypeUnkownAndSize>();
@@ -177,7 +179,6 @@ public class OnImportImagesPressed : MonoBehaviour
                 {
                     if (frameJsonInfo.attachPoints[i] is AttachPoint)
                     {
-                        Debug.Log("wot");
                         if ((frameJsonInfo.attachPoints[i] as AttachPoint).name == "PrimaryHand")
                         {
                             AttachPoint hand1 = frameJsonInfo.attachPoints[i] as AttachPoint;

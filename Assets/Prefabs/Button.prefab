@@ -361,6 +361,7 @@ MonoBehaviour:
   HandImage2: {fileID: 0}
   IsTwoHanded: {fileID: 0}
   texture: {fileID: 0}
+  buttonImage: {fileID: 3333324630018254442}
   FilePath: 
   JsonHasBeenGenerated: 0
   onImportImagesPressed: {fileID: 0}

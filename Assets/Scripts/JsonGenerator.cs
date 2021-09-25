@@ -41,24 +41,8 @@ public class JsonGenerator : MonoBehaviour
     private OnImportImagesPressed onImportImagesPressedComponent;
 
     private static readonly CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
-
-    public static float DoTheMath(Transform generatorObject, GameObject objectToCheck, Axis axis, float offset)
-    {
-        // calculation without offset
-        var moveAmount = axis == Axis.X ? generatorObject.right.x / 5.4f : generatorObject.up.y / 5.4f;
-
-        var distance = axis == Axis.X ? objectToCheck.transform.position.x - OnImportImagesPressed.readPoint.x : objectToCheck.transform.position.y - OnImportImagesPressed.readPoint.y;
-
-        var pixelsMoved = Mathf.Round(distance / moveAmount);
-
-        // adding offset now
-        pixelsMoved += offset;
-
-        // doing the division to the sum and then parsing the string
-        var objectValue = pixelsMoved / 16;
-        return objectValue;
-    }
-
+    //this class is basically responsible for all of data file output
+   
     public void OnCreateJsonAnimationPressed()
     {
         for (int i = 0; i < MainSpriteController.instance.currentAnimation.frames.Length; i++)
@@ -164,6 +148,33 @@ public class JsonGenerator : MonoBehaviour
             {
                 
                 File.WriteAllText(Path.Combine(animation.AnimationDirectory, animation.animationName+" offset code"+".txt"), offsetCode);
+                Debug.Log("nice, it (should have) worked");
+            }
+            else
+            {
+                Debug.LogError("Shit, path was empty!");
+            }
+
+        }
+    }
+    public void GenerateBarrelPositionCode()
+    {
+        GaeAnimationInfo animation = MainSpriteController.instance.currentFrame.animationInfo;
+        FrameInfo info = MainSpriteController.instance.currentFrame;
+        if (animation != null)
+        {
+            if (!info.path.Contains("idle_001"))
+            {
+                Debug.Log("this shouldnt ever happen, but ill let it slide");
+            }
+            float barrelOffsetXString = info.muzzleflashPositionX / 16f;
+            float barrelOffsetYString = info.muzzleflashPositionY / 16f;
+
+            string offsetCode = $"gun.barrelOffset.localPosition = new Vector3({barrelOffsetXString}f, {barrelOffsetYString}f, 0f);"; 
+            if (!string.IsNullOrEmpty(animation.AnimationDirectory))
+            {
+
+                File.WriteAllText(Path.Combine(animation.AnimationDirectory, animation.animationName + "barrel offset code" + ".txt"), offsetCode);
                 Debug.Log("nice, it (should have) worked");
             }
             else

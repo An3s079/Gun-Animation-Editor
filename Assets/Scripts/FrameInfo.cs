@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
 
-
+/// <summary>
+/// defines a single frame in the animation. all measurements are in whole pixels. data should best represent the program's needs.
+/// contains some addition data such as the frame sprite
+/// </summary>
 public class FrameInfo
 {
+
     public FrameInfo(Texture2D texture , string path, GaeAnimationInfo animationInfo)
     {
         this.animationInfo = animationInfo;
@@ -61,6 +65,8 @@ public class FrameInfo
     public float hand1PositionY;
     public float hand2PositionX;
     public float hand2PositionY;
+    public float muzzleflashPositionX = 0;
+    public float muzzleflashPositionY = 0;
     public bool isTwoHanded
     {
         get

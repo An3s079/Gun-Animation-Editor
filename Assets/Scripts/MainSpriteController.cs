@@ -73,7 +73,6 @@ public class MainSpriteController : MonoBehaviour
     {
         if (currentAnimation != null && currentFrame != null)
         {
-            Debug.Log("update sprite data ran");
             Image mainSprite = StaticRefrences.Instance.MainSprite;
             RawImage hand1 = StaticRefrences.Instance.handIMG;
             RawImage hand2 = StaticRefrences.Instance.handIMG2;
@@ -91,14 +90,16 @@ public class MainSpriteController : MonoBehaviour
         }
     }
     [SerializeField]
-    GameObject barreGenButton;
+    private GameObject barreGenButton;
     [SerializeField]
-    GameObject barrelInfoButton;
+    private GameObject barrelInfoButton;
     [SerializeField]
-    RectTransform MuzzleFlashObject;
+    private RectTransform MuzzleFlashObject;
+    [SerializeField]
+    private GameObject MuzzleFlashSign;
     public void UpdateSprite(bool UpdateInputLabels)
     {
-        Debug.Log("update sprite ran");
+
         if (currentAnimation != null && currentFrame!= null)
         {
             
@@ -133,6 +134,7 @@ public class MainSpriteController : MonoBehaviour
                     barreGenButton.SetActive(true);
                     barrelInfoButton.SetActive(true);
                     MuzzleFlashObject.gameObject.SetActive(true);
+                    MuzzleFlashSign.SetActive(true);
                     int zoomscale = StaticRefrences.zoomScale;
                     Vector2 muzzlepos = new Vector2(pos.x + currentFrame.muzzleflashPositionX * zoomscale, pos.y + currentFrame.muzzleflashPositionY * zoomscale);
                     MuzzleFlashObject.anchoredPosition = muzzlepos;
@@ -142,6 +144,7 @@ public class MainSpriteController : MonoBehaviour
                     barreGenButton.SetActive(false);
                     barrelInfoButton.SetActive(false);
                     MuzzleFlashObject.gameObject.SetActive(false);
+                    MuzzleFlashSign.SetActive(false);
                 }
             }
             if (frameCounter != null)
@@ -164,9 +167,8 @@ public class MainSpriteController : MonoBehaviour
             barreGenButton.SetActive(false);
             barrelInfoButton.SetActive(false);
             MuzzleFlashObject.gameObject.SetActive(false);
+            MuzzleFlashSign.SetActive(false);
         }
-        Debug.Log("end of updateSprite method");
-
     }
     public FrameInfo currentFrame 
     {

@@ -5,13 +5,8 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text;
 
-
-public enum Axis
-{
-    X = 0,
-    Y = 1
-}
 
 public class JsonGenerator : MonoBehaviour
 {
@@ -111,27 +106,26 @@ public class JsonGenerator : MonoBehaviour
         GaeAnimationInfo animation = MainSpriteController.instance.currentAnimation;
         if (animation != null)
         {
-            string offsetCode = 
-                "//make sure the animation name and variable names are correct, the program may have made the wrong desicion\n" +
+            StringBuilder builder = new StringBuilder("//make sure the animation name and variable names are correct, the program may have made the wrong decision \n" +
                 "tk2dSpriteAnimationClip animationclip = gun.sprite.spriteAnimator.GetClipByName(" + animation.animationName.Trim('_') + ");\n" +
-                "float[] offsetsX = new float[] {";
-            offsetCode += (animation.frames[0].offsetX/16).ToString("f4", culture);
+                "float[] offsetsX = new float[] {");
+            builder.Append((animation.frames[0].offsetX / 16).ToString("f4", culture));
             for (int i = 1; i < animation.frames.Length; i++)
             {
-                offsetCode += "," + (animation.frames[i].offsetX/16).ToString("f4", culture);
+                builder.Append(",");
+                builder.Append((animation.frames[i].offsetX / 16).ToString("f4", culture));
             }
-            offsetCode += "};\n";
+            builder.Append("};\n");
 
-
-            offsetCode += "float[] offsetsY = new float[] {";
-            offsetCode += (animation.frames[0].offsetY/16f).ToString("f4", culture);
+            builder.Append("float[] offsetsY = new float[] {");
+            builder.Append((animation.frames[0].offsetY / 16).ToString("f4", culture));
             for (int i = 1; i < animation.frames.Length; i++)
             {
-                offsetCode += "," + (animation.frames[i].offsetY/16f).ToString("f4",culture);
+                builder.Append(",");
+                builder.Append((animation.frames[i].offsetY / 16).ToString("f4", culture));
             }
-            offsetCode += "};\n";
-            offsetCode +=
-            "for (int i = 0; i < offsetsX.Length && i < offsetsY.Length && i < fireClip.frames.Length; i++)" +
+            builder.Append("};\n");
+            builder.Append("for (int i = 0; i < offsetsX.Length && i < offsetsY.Length && i < fireClip.frames.Length; i++)" +
                 "{" +
                     "int id = fireClip.frames[i].spriteId;" +
                     "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position0.x += offsetsX[i];" +
@@ -142,19 +136,18 @@ public class JsonGenerator : MonoBehaviour
                     "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position2.y += offsetsY[i];" +
                     "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position3.x += offsetsX[i];" +
                     "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position3.y += offsetsY[i];" +
-               " }";
+               " }");
 
             if (!string.IsNullOrEmpty(animation.AnimationDirectory))
             {
                 
-                File.WriteAllText(Path.Combine(animation.AnimationDirectory, animation.animationName+" offset code"+".txt"), offsetCode);
+                File.WriteAllText(Path.Combine(animation.AnimationDirectory, animation.animationName+" offset code"+".txt"), builder.ToString());
                 Debug.Log("nice, it (should have) worked");
             }
             else
             {
                 Debug.LogError("Shit, path was empty!");
             }
-
         }
     }
     public void GenerateBarrelPositionCode()
@@ -174,7 +167,7 @@ public class JsonGenerator : MonoBehaviour
             if (!string.IsNullOrEmpty(animation.AnimationDirectory))
             {
 
-                File.WriteAllText(Path.Combine(animation.AnimationDirectory, animation.animationName + "barrel offset code" + ".txt"), offsetCode);
+                File.WriteAllText(Path.Combine(animation.AnimationDirectory, animation.animationName + " barrel offset code" + ".txt"), offsetCode);
                 Debug.Log("nice, it (should have) worked");
             }
             else

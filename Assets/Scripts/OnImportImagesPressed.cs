@@ -6,6 +6,8 @@ using System.IO;
 using UnityEditor;
 using SFB;
 using System;
+using Newtonsoft.Json;
+
 
 public class OnImportImagesPressed : MonoBehaviour
 {
@@ -25,283 +27,201 @@ public class OnImportImagesPressed : MonoBehaviour
     HandController handController1;
     HandController handController2;
     public bool ControllingHand2 = false;
-    public TabDisplay SelectedTab ;
-    public JsonGenerator jsonGenerator;
+    public TabDisplay SelectedTab;
 
     void Start()
     {
         Image.sprite = DefaultTexture;
         Image.SetNativeSize();      
-                Image.transform.localScale = new Vector3(20,20, 1);   
-        InvokeRepeating("UpdateEverySecond", 0, 0.1f);
+              //  Image.transform.localScale = new Vector3(20,20, 1);   
     }
+    //responsible for loading up data from computer memory.
+    public void ImportSingleImages()
+    {
+        Image.sprite = DefaultTexture;
+        paths = StandaloneFileBrowser.OpenFilePanel("gotta make them guns ey?", "", "png", true);
 
-   public void ImportImages()
+        if (paths.Length > 0)
+        {
+            for (int i = 0; i < paths.Length; i++)
+            {
+                FileInfo info = new FileInfo(paths[i]);
+
+                GaeAnimationInfo animationInfo = new GaeAnimationInfo();
+
+                animationInfo.AnimationDirectory = info.DirectoryName;
+
+                animationInfo.frames = new FrameInfo[1];
+                
+                animationInfo.frames[0] = LoadSingleFrame(info.FullName,animationInfo);
+
+                animationInfo.animationName = Path.GetFileNameWithoutExtension(info.FullName);
+
+                RectTransform content = StaticRefrences.Instance.TabArea.GetComponent<ScrollRect>().content;
+                RectTransform tabArea = StaticRefrences.Instance.TabArea.GetComponent<RectTransform>();
+
+                var newButton = Instantiate(ImgTabPrefab, content, false);
+                newButton.name = animationInfo.animationName + " button";
+                RectTransform buttonRectTransform = newButton.GetComponent<RectTransform>();
+                buttonRectTransform.localPosition = new Vector3(0, 0, 0);
+                float ratio = tabArea.rect.width / buttonRectTransform.rect.width;
+                newButton.transform.localScale = new Vector3(ratio, ratio, 1f);
+
+                TabDisplay newButtonTabDisplay = newButton.GetComponent<TabDisplay>();
+                newButtonTabDisplay.TMPtext.text = animationInfo.animationName;
+                newButtonTabDisplay.animationInfo = animationInfo;
+
+                StaticRefrences.Instance.spriteController.SetAnimation(animationInfo);
+            }
+            
+         
+            
+        }
+    }
+    
+   public void ImportAnimation()
    {
         Image.sprite = DefaultTexture;
-        //Image.SetNativeSize();
-         paths = StandaloneFileBrowser.OpenFilePanel("Title", "", "png", true);
-        if (paths.Length > 0) {
-            StartCoroutine(OutputRoutine(paths));
-        }
-     
-   }
+        paths = StandaloneFileBrowser.OpenFilePanel("gotta make them guns ey?", "", "png", false);
 
-    private IEnumerator OutputRoutine(string[] url) {
-    
-        foreach(string s in url)
-        {       
-        Image.sprite = DefaultTexture;
-        Image.transform.localScale = new Vector3(20f,20f, 1); 
-        var loader = new WWW(s);
-        
-        yield return loader;
-        
-        var SpriteToUse = Sprite.Create(loader.texture, new Rect(0.0f, 0.0f, loader.texture.width, loader.texture.height), new Vector2(0.5f, 0.5f), 1);
-        Image.sprite = SpriteToUse;
-        Image.preserveAspect = true;
-        Image.sprite.texture.filterMode = FilterMode.Point;
-        Image.SetNativeSize();
-        
+        if (paths.Length>0)
+        {
+            FileInfo info = new FileInfo(paths[0]);
+            string fileName = Path.GetFileNameWithoutExtension(paths[0]);
 
-        handIMG.SetNativeSize();
-        
-        
-        var newButton = Instantiate(ImgTabPrefab, new Vector3(-5.26f, 0), Quaternion.identity, TabArea.transform);
-        newButton.name = "Dabutton";
-        newButton.GetComponent<RectTransform>().localPosition = new Vector3(newButton.GetComponent<RectTransform>().localPosition.x, newButton.GetComponent<RectTransform>().localPosition.y, 0);
-        newButton.transform.localScale = new Vector3(1.658659f, 1.508957f, 0.9996841f);
-        string ItemName = s;
-        string[] ItenmName2;
-        ItemName.Replace("_", " ");
-        ItenmName2 = ItemName.Split('\\');
-        
-        newButton.GetComponent<TabDisplay>().TMPtext.text = ItenmName2[ItenmName2.Length -1];
+            string animationName = RemoveTrailingDigits(fileName);
+            FileInfo[] files = info.Directory.GetFiles(animationName + "*.png");
+           
+            GaeAnimationInfo animationInfo = new GaeAnimationInfo();
+            animationInfo.AnimationDirectory = info.DirectoryName;
 
-        newButton.GetComponent<TabDisplay>().Sprite.sprite = SpriteToUse;
-        newButton.GetComponent<TabDisplay>().SpriteDisplay = Image;
-        newButton.GetComponent<TabDisplay>().BeegSprite = Image.sprite;
-        newButton.GetComponent<TabDisplay>().Sprite.preserveAspect = true;
-        newButton.GetComponent<TabDisplay>().DefaultTexture = DefaultTexture;
-        newButton.GetComponent<TabDisplay>().ScrollThingBitchIdkLol = scrollthing;
-        newButton.GetComponent<TabDisplay>().GreyBackgroundThangIdk = GreyBackgroundThangIdk;
-        newButton.GetComponent<TabDisplay>().HandImage = handIMG;
-        newButton.GetComponent<TabDisplay>().FilePath = s;
-        newButton.GetComponent<TabDisplay>().HandImage2 = handIMG2;
-        newButton.GetComponent<TabDisplay>().IsTwoHanded = IsTwoHanded;
-        newButton.GetComponent<TabDisplay>().onImportImagesPressed = this;
-        newButton.GetComponent<TabDisplay>().jsonGenerator = jsonGenerator;
-        SelectedTab = newButton.GetComponent<TabDisplay>();
-            Vector3[] corners = new Vector3[4];
-            Image.GetComponent<RectTransform>().GetWorldCorners(corners);
-            handIMG.transform.position = corners[0];
-            JsonGenerator.FilePath = s;
-            handIMG2.transform.position = corners[0];
-            handIMG2.transform.localScale = handIMG.transform.localScale;
-            // // // // // // // // float width = (Image.GetComponent<RectTransform> ().offsetMax.x - Image.GetComponent<RectTransform> ().offsetMin.x) * Image.transform.lo;
-            // // // // // // // // SizePerPixel =  width / Image.texture.width;
-            // // // // // // // // Debug.Log(SizePerPixel + "width"+ width);
+            animationInfo.frames = new FrameInfo[files.Length];
+            for (int i = 0; i < animationInfo.frames.Length; i++)
+            {
+                animationInfo.frames[i] = LoadSingleFrame(files[i].FullName,animationInfo);
+            }
+            animationInfo.animationName = RemoveTrailingDigits(Path.GetFileNameWithoutExtension(files[0].FullName));
+
+  
+            RectTransform content = StaticRefrences.Instance.TabArea.GetComponent<ScrollRect>().content;
+            RectTransform tabArea = StaticRefrences.Instance.TabArea.GetComponent<RectTransform>();
+
+            var newButton = Instantiate(ImgTabPrefab, content,false);
+            newButton.name = animationInfo.animationName+" button";
+            RectTransform buttonRectTransform = newButton.GetComponent<RectTransform>();
+            buttonRectTransform.localPosition = new Vector3(0,0,0);
+            float ratio = tabArea.rect.width / buttonRectTransform.rect.width;
+            newButton.transform.localScale = new Vector3(ratio, ratio, 1f);
+           
+            TabDisplay newButtonTabDisplay = newButton.GetComponent<TabDisplay>();
+            newButtonTabDisplay.TMPtext.text = animationInfo.animationName;
+            newButtonTabDisplay.animationInfo = animationInfo;
+
+            StaticRefrences.Instance.spriteController.SetAnimation(animationInfo);
         }
 
-        
-        
 
     }
+    GameObject newbutton = null;
+    private string RemoveTrailingDigits(string path)
+    {
+
+        int firstNumberIndex = path.Length-1;
+        while (firstNumberIndex >= 0 && char.IsDigit(path[firstNumberIndex]))
+        {
+            firstNumberIndex--;
+        }
+        return path.Substring(0, firstNumberIndex);
+    }
+    private FrameInfo LoadSingleFrame(string path,GaeAnimationInfo animationInfo)
+    {
+        path = System.IO.Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));
+       
+        string pngPath = path + ".png";
+        string jsonPath = path + ".json";
+        if (!File.Exists(pngPath))
+        {
+            return null;
+        }
+        byte[] bytes = File.ReadAllBytes(pngPath);
+        Texture2D tex = new Texture2D(2, 2);
+        tex.LoadImage(bytes);
+        tex.filterMode = FilterMode.Point;
+        Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f), 1);
+        if (File.Exists(jsonPath))
+        {
+            try
+            {
+                string jsonInfo = File.ReadAllText(jsonPath);
+                FrameJsonInfo frameJsonInfo = JsonConvert.DeserializeObject<FrameJsonInfo>(jsonInfo);
+              
+                for (int i = 1; i < frameJsonInfo.attachPoints.Length; i++)
+                {
+                    //this bit of code relies on conversion exceptions to make sure the data type is right. this only happens to class members are marked as [JsonRequiredAttribute]
+                    //this is probably really bad practice. especially since it relies on loaded objects to be of " Newtonsoft.Json.Linq.JObject" type but i dont know any better as of writing this
+                    try
+                    {
+                        frameJsonInfo.attachPoints[i] = (frameJsonInfo.attachPoints[i] as Newtonsoft.Json.Linq.JObject).ToObject<ArrayTypeUnkownAndSize>();
+                    }
+                    catch (Exception){}
+                    try
+                    {
+                        frameJsonInfo.attachPoints[i] = (frameJsonInfo.attachPoints[i] as Newtonsoft.Json.Linq.JObject).ToObject<AttachPoint>();
+                    }
+                    catch (Exception){}
+                }
+                float convertedX1 = 0;
+                float convertedX2 = 0;
+                float convertedY1 = 0;
+                float convertedY2 = 0;
+                bool isTwoHanded = false;
+                for (int i = 0; i < frameJsonInfo.attachPoints.Length; i++)
+                {
+                    if (frameJsonInfo.attachPoints[i] is AttachPoint)
+                    {
+                        if ((frameJsonInfo.attachPoints[i] as AttachPoint).name == "PrimaryHand")
+                        {
+                            AttachPoint hand1 = frameJsonInfo.attachPoints[i] as AttachPoint;
+                            convertedX1 = hand1.position.x * 16 - frameJsonInfo.x;
+                            convertedY1 = hand1.position.y * 16 - frameJsonInfo.y;
+                        }
+                        else if((frameJsonInfo.attachPoints[i] as AttachPoint).name == "SecondaryHand")
+                        {
+                            AttachPoint hand2 = frameJsonInfo.attachPoints[i] as AttachPoint;
+                            convertedX2 = hand2.position.x * 16 - frameJsonInfo.x;
+                            convertedY2 = hand2.position.y * 16 - frameJsonInfo.y;
+                            isTwoHanded = true;
+                        }
+                    }
+                }
+                return new FrameInfo(tex, sprite, convertedX1, convertedY1, convertedX2, convertedY2, frameJsonInfo.x, frameJsonInfo.y, isTwoHanded, path,animationInfo);
+            }
+            catch (Exception)
+            {
+                throw new Exception("json seems to be invalid! or i dont know how to read jsons (prob the second one ;) )!");
+            }
+        }
+        return new FrameInfo(tex, sprite , pngPath,animationInfo);
+    }
+   
+
+
+
     private void OnDrawGizmos()
     {
-    Vector3[] corners = new Vector3[4];
-    Image.GetComponent<RectTransform>().GetWorldCorners(corners);
-
-    var center = (corners[0] + corners[2]) / 2;
-    var size = corners[2]- corners[0];
-    Gizmos.color = new Color(0, 1, 0, 0.5f);
-    Gizmos.DrawCube(center, size);
-    }
-    float startTime = 0f;
-    float holdTime = 0.3f;
-    void Update()
-    {
-
-        GreyBackgroundThangIdk.rectTransform.sizeDelta = Image.rectTransform.sizeDelta;
-        GreyBackgroundThangIdk.transform.localScale = Image.transform.localScale;
-        GreyBackgroundThangIdk.transform.position = Image.transform.position;
         Vector3[] corners = new Vector3[4];
         Image.GetComponent<RectTransform>().GetWorldCorners(corners);
-        readPoint = corners[0];
 
-            if(Input.GetKeyDown(KeyCode.D))
-            {startTime = Time.time;
-                handIMG.transform.position += transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKeyDown(KeyCode.W))
-            {startTime = Time.time;
-                handIMG.transform.position += transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKeyDown(KeyCode.S))
-            {startTime = Time.time;
-                handIMG.transform.position += -transform.up / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-            if(Input.GetKeyDown(KeyCode.A))
-            {startTime = Time.time;
-                handIMG.transform.position += -transform.right / 5.4f;
-                SelectedTab.JsonHasBeenGenerated = false;
-            }
-        
-        if(IsTwoHanded.isOn)
-		{
-			//if (ControllingHand2 == true)
-			//{
-				if (Input.GetKeyDown(KeyCode.RightArrow))
-				{
-					startTime = Time.time;
-					handIMG2.transform.position += transform.right / 5.4f;
-					SelectedTab.JsonHasBeenGenerated = false;
-				}
-				if (Input.GetKeyDown(KeyCode.UpArrow))
-				{
-					startTime = Time.time;
-					handIMG2.transform.position += transform.up / 5.4f;
-					SelectedTab.JsonHasBeenGenerated = false;
-				}
-				if (Input.GetKeyDown(KeyCode.DownArrow))
-				{
-					startTime = Time.time;
-					handIMG2.transform.position += -transform.up / 5.4f;
-					SelectedTab.JsonHasBeenGenerated = false;
-				}
-				if (Input.GetKeyDown(KeyCode.LeftArrow))
-				{
-					startTime = Time.time;
-					handIMG2.transform.position += -transform.right / 5.4f;
-					SelectedTab.JsonHasBeenGenerated = false;
-				}
-			//}
-
-
-		}
-	}
-
-    private void UpdateEverySecond()
-    {
-        if (Input.GetKey(KeyCode.D))
-        {
-            if (startTime + holdTime <= Time.time)
-                handIMG.transform.position += transform.right / 5.4f;
-            SelectedTab.JsonHasBeenGenerated = false;
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            if (startTime + holdTime <= Time.time)
-                handIMG.transform.position += transform.up / 5.4f;
-            SelectedTab.JsonHasBeenGenerated = false;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            if (startTime + holdTime <= Time.time)
-                handIMG.transform.position += -transform.up / 5.4f;
-            SelectedTab.JsonHasBeenGenerated = false;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            if (startTime + holdTime <= Time.time)
-                handIMG.transform.position += -transform.right / 5.4f;
-            SelectedTab.JsonHasBeenGenerated = false;
-        }
-        if (IsTwoHanded.isOn)
-        { 
-			
-			//if(ControllingHand2 == true)
-			//{
-				if (Input.GetKey(KeyCode.RightArrow))
-				{
-					if (startTime + holdTime <= Time.time)
-						handIMG2.transform.position += transform.right / 5.4f;
-					SelectedTab.JsonHasBeenGenerated = false;
-				}
-				if (Input.GetKey(KeyCode.UpArrow))
-				{
-					if (startTime + holdTime <= Time.time)
-						handIMG2.transform.position += transform.up / 5.4f;
-					SelectedTab.JsonHasBeenGenerated = false;
-				}
-				if (Input.GetKey(KeyCode.DownArrow))
-				{
-					if (startTime + holdTime <= Time.time)
-						handIMG2.transform.position += -transform.up / 5.4f;
-					SelectedTab.JsonHasBeenGenerated = false;
-				}
-				if (Input.GetKey(KeyCode.LeftArrow))
-				{
-					if (startTime + holdTime <= Time.time)
-						handIMG2.transform.position += -transform.right / 5.4f;
-					SelectedTab.JsonHasBeenGenerated = false;
-				}
-			//}
-		}
+        var center = (corners[0] + corners[2]) / 2;
+        var size = corners[2] - corners[0];
+        Gizmos.color = new Color(0, 1, 0, 0.5f);
+        Gizmos.DrawCube(center, size);
     }
-
-}
-
-public static class FloatExtensions
-{
-    public enum ROUNDING { UP, DOWN, CLOSEST }
- 
-    public static float ToNearestMultiple(this float f, int multiple, ROUNDING roundTowards = ROUNDING.CLOSEST)
+    void Update()
     {
-        f /= multiple;
- 
-        return (roundTowards == ROUNDING.UP ? Mathf.Ceil(f) : (roundTowards == ROUNDING.DOWN ? Mathf.Floor(f) : Mathf.Round(f))) * multiple;
-    }
- 
-    /// <summary>
-    /// Using a multiple with a maximum of two decimal places, will round to this value based on the ROUNDING method chosen
-    /// </summary>
-    public static float ToNearestMultiple(this float f, float multiple, ROUNDING roundTowards = ROUNDING.CLOSEST)
-    {
-        f = float.Parse((f * 100).ToString("f0"));
-        multiple = float.Parse((multiple * 100).ToString("f0"));
- 
-        f /= multiple;
- 
-        f = (roundTowards == ROUNDING.UP ? Mathf.Ceil(f) : (roundTowards == ROUNDING.DOWN ? Mathf.Floor(f) : Mathf.Round(f))) * multiple;
- 
-        return f / 100;
+        Vector3[] corners = new Vector3[4];
+        Image.GetComponent<RectTransform>().GetWorldCorners(corners);
+        readPoint = corners[0];  
     }
 }
 
-
-static class CanvasExtensions {
-public static Vector2 SizeToParent(this RawImage image, float padding = 0) {
-        float w = 0, h = 0;
-        var parent = image.GetComponentInParent<RectTransform>();
-        var imageTransform = image.GetComponent<RectTransform>();
-
-        // check if there is something to do
-        if (image.texture != null) {
-            if (!parent) { return imageTransform.sizeDelta; } //if we don't have a parent, just return our current width;
-            padding = 1 - padding;
-            float ratio = image.texture.width / (float)image.texture.height;
-            var bounds = new Rect(0, 0, parent.rect.width, parent.rect.height);
-            if (Mathf.RoundToInt(imageTransform.eulerAngles.z) % 180 == 90) {
-                //Invert the bounds if the image is rotated
-                bounds.size = new Vector2(bounds.height, bounds.width);
-            }
-            //Size by height first
-            h = bounds.height * padding;
-            w = h * ratio;
-            if (w > bounds.width * padding) { //If it doesn't fit, fallback to width;
-                w = bounds.width * padding;
-                h = w / ratio;
-            }
-        }
-        imageTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
-        imageTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
-        return imageTransform.sizeDelta;
-    }
-
-
-    
-}

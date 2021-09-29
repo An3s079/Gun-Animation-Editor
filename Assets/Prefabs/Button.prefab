@@ -238,7 +238,7 @@ RectTransform:
   m_GameObject: {fileID: 3333324630936149581}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.7420374, y: 1.7420374, z: 1.7420374}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3333324629967706197}
   - {fileID: 3333324630018254445}
@@ -248,7 +248,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 494.25177, y: 525}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3333324630936149577
@@ -356,17 +356,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 075068fd727d99b4fac0dd226d2ccd0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GreyBackgroundThangIdk: {fileID: 0}
   TMPtext: {fileID: 3333324629967706194}
-  Sprite: {fileID: 3333324630018254442}
-  SpriteDisplay: {fileID: 0}
-  DefaultTexture: {fileID: 0}
-  ScrollThingBitchIdkLol: {fileID: 7528398415879503175, guid: caa0cde9e24e6464faae3ae97d0f7853, type: 3}
-  BeegSprite: {fileID: 0}
   HandImage: {fileID: 0}
   HandImage2: {fileID: 0}
   IsTwoHanded: {fileID: 0}
+  texture: {fileID: 0}
+  buttonImage: {fileID: 3333324630018254442}
   FilePath: 
+  JsonHasBeenGenerated: 0
+  onImportImagesPressed: {fileID: 0}
+  jsonGenerator: {fileID: 0}
 --- !u!1 &8116262392071136575
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,48 +7,105 @@ using UnityEditor;
 using SFB;
 using UnityEngine.EventSystems;
 
-public class HandController : MonoBehaviour
+public class HandController : MonoBehaviour, IDragHandler,IBeginDragHandler,IEndDragHandler
 {
     Vector2 mousePos;
     private float  deltaX, deltaY;
-    public bool SettingPos;
+    public bool SettingPosz; 
 
     [SerializeField]
     private OnImportImagesPressed onImportImagesPressed;
+    [SerializeField]
+    private Canvas canvas;
+    [SerializeField]
+    private RectTransform rectTransform;
 
-    private void OnMouseDown()
+    [SerializeField]
+    private KeyCode up = KeyCode.None;
+    [SerializeField]
+    private KeyCode down = KeyCode.None;
+    [SerializeField]
+    private KeyCode left = KeyCode.None;
+    [SerializeField]
+    private KeyCode right = KeyCode.None;
+    private void Start()
     {
-        deltaX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - transform.position.x;
-        deltaY = Camera.main.ScreenToWorldPoint(Input.mousePosition).y - transform.position.y;
-        onImportImagesPressed.SelectedTab.JsonHasBeenGenerated = false;
-    }
-
-    private void OnMouseDrag()
-    {
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector3((mousePos.x - deltaX), (mousePos.y - deltaY));
-
-      
-    }
-
-    private void OnMouseUp()
-    {
-        transform.position = new Vector3(transform.position.x, transform.position.y);
-          Vector3 DesiredHandPos = OnImportImagesPressed.readPoint;
+        if (canvas == null)
+        {
+            canvas = GetComponentInParent<Canvas>();
+        }
+        if (rectTransform == null)
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
         
-        float moveAmount = transform.right.x / 5.4f;
-        float distanceXHand1 = transform.position.x - OnImportImagesPressed.readPoint.x;
-        var PixelsMovedHand1X = distanceXHand1 / moveAmount;
-        var RoundedPixelsMovedHand1X = Mathf.Round(PixelsMovedHand1X);
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(up))
+        {
+            Vector2 pos = rectTransform.anchoredPosition;
+            pos.y += StaticRefrences.zoomScale;
+            int roundX = Mathf.RoundToInt(pos.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            int roundY = Mathf.RoundToInt(pos.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            pos = new Vector2(roundX, roundY);
+            rectTransform.anchoredPosition = pos;
+        }
+        if (Input.GetKeyDown(down))
+        {
+            Vector2 pos = rectTransform.anchoredPosition;
+            pos.y -= StaticRefrences.zoomScale;
+            int roundX = Mathf.RoundToInt(pos.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            int roundY = Mathf.RoundToInt(pos.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            pos = new Vector2(roundX, roundY);
+            rectTransform.anchoredPosition = pos;
+        }
+        if (Input.GetKeyDown(left))
+        {
+            Vector2 pos = rectTransform.anchoredPosition;
+            pos.x -= StaticRefrences.zoomScale;
+            int roundX = Mathf.RoundToInt(pos.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            int roundY = Mathf.RoundToInt(pos.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            pos = new Vector2(roundX, roundY);
+            rectTransform.anchoredPosition = pos;
+        }
+        if (Input.GetKeyDown(right))
+        {
+            Vector2 pos = rectTransform.anchoredPosition;
+            pos.x += StaticRefrences.zoomScale;
+            int roundX = Mathf.RoundToInt(pos.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            int roundY = Mathf.RoundToInt(pos.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            pos = new Vector2(roundX, roundY);
+            rectTransform.anchoredPosition = pos;
+        }
 
-        float distanceYHand1 = transform.position.y - OnImportImagesPressed.readPoint.y;
-        var PixelsMovedHand1Y = distanceYHand1 / moveAmount;
-        var RoundedPixelsMovedHand1Y = Mathf.Round(PixelsMovedHand1Y);
-        for(int i = 0; i < RoundedPixelsMovedHand1X; i++)
-            DesiredHandPos.x += transform.right.x / 5.4f;
+    }
+    //used drag the hands and anchor around. reason it updates sprite when dragged is to make it follow the anchor.
+    public void OnDrag(PointerEventData eventData)
+    {
+        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        //Vector2 position = rectTransform.anchoredPosition;
+        //int roundX = Mathf.RoundToInt(position.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+        //int roundY = Mathf.RoundToInt(position.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+        //position = new Vector2(roundX, roundY);
+        //rectTransform.anchoredPosition = position;
+        MainSpriteController.instance.UpdateCurrentFrameHandData();
+        MainSpriteController.instance.UpdateSprite(true);
+    }
 
-        for(int i = 0; i < RoundedPixelsMovedHand1Y; i++)
-            DesiredHandPos.y += transform.right.x / 5.4f;
-        transform.position = DesiredHandPos;
+    void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
+    {
+        
+    }
+
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+    {
+        Vector2 position = rectTransform.anchoredPosition;
+        int roundX = Mathf.RoundToInt(position.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+        int roundY = Mathf.RoundToInt(position.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+        position = new Vector2(roundX,roundY);
+        rectTransform.anchoredPosition = position;
+        MainSpriteController.instance.UpdateCurrentFrameHandData();
+        MainSpriteController.instance.UpdateSprite(true);
     }
 }

@@ -1,269 +1,184 @@
-﻿using System.IO;
-using System.Text;
-using System.Runtime.InteropServices;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using SFB;
-using TMPro;
+using System.Text;
+
 
 public class JsonGenerator : MonoBehaviour
 {
+    public static string dataOneHanded;
+    public static string dataTwoHanded;
     public static string FilePath;
-    [SerializeField]
-    GameObject hand;
-    [SerializeField]
-    GameObject hand2;
 
-    [SerializeField]
-    Toggle TwoHandToggle;
-    double Hand1X = 0.0;
-    double Hand1Y = 0.0;
-
-    double Hand2X = 0;
-    double Hand2Y = 0;
-    
-    [SerializeField]
-    TMP_InputField XOffset;   
-    [SerializeField]
-    TMP_InputField YOffset;
-    
     [SerializeField]
     public GameObject CheckMark;
 
-    public void OnCreateJsonPressed()
-    {   if(TwoHandToggle.isOn ==false)
-        {
-         string XoffsetString = XOffset.text;
-         string YoffsetString = YOffset.text;
-
-        float XOffsetValue = float.Parse(XoffsetString);
-        float YOffsetValue = float.Parse(YoffsetString);
-         
-        float correctedXOffsetValue = XOffsetValue/16;
-        float correctedYOffsetValue = YOffsetValue/16;
-
-        float moveAmount = transform.right.x / 5.4f;
-        float distanceXHand1 = hand.transform.position.x - OnImportImagesPressed.readPoint.x;
-        var PixelsMovedHand1X = distanceXHand1 / moveAmount;
-        var RoundedPixelsMovedHand1X = Mathf.Round(PixelsMovedHand1X);
-
-        Hand1X = (RoundedPixelsMovedHand1X)/16;
-
-        float distanceYHand1 = hand.transform.position.y - OnImportImagesPressed.readPoint.y;
-        var PixelsMovedHand1Y = distanceYHand1 / moveAmount;
-        var RoundedPixelsMovedHand1Y = Mathf.Round(PixelsMovedHand1Y);
-
-        Hand1Y = (RoundedPixelsMovedHand1Y)/16;
-
-        Hand1X += correctedXOffsetValue;
-        Hand1Y += correctedYOffsetValue;
-
-        bool isInt1X = Hand1X % 1 == 0;
-        bool isInt1Y = Hand1Y % 1 == 0;
-        if(isInt1X)
-            Hand1X+=0.0001;
-        if(isInt1Y)
-            Hand1Y+= 0.0001;
-        
-        
-
-        dataOneHanded = "{"+
-    "\n\"name\": null," +
-    "\n\"x\": 0,"+
-    "\n\"y\": 0,"+
-    "\n\"width\": 27,"+ 
-    "\n\"height\": 27,"+
-    "\n\"flip\": 1,"+
-    "\n\"attachPoints\": ["+
-    "\n{" +
-    "\n   \".\": \"arraytype\","+
-    "\n   \"name\": \"array\"," +
-    "\n   \"size\": 2" +
-    "\n},"+
-    "\n{"+
-    "\n   \"name\": \"PrimaryHand\","+
-    "\n\"position\": {" +
-    $"\n   \"x\": {Hand1X},"+
-    $"\n   \"y\": {Hand1Y},"+
-    "\n   \"z\": 0.0" +
-    "\n}," +
-    "\n\"angle\": 0.0"+
-    "\n},"+
-    
-    
-    "\n\n\n{"+
-    "\n\"name\": \"Casing\"," +
-    "\n\"position\": {"+
-    "\n   \"x\": 0.5625,"+
-    "\n   \"y\": 0.375,"+
-    "\n   \"z\": 0.0" +
-    "\n},"+
-    "\n\"angle\": 0.0"+
-    "\n}" +
-    "\n]"+
-    "\n}";
-        Debug.Log(dataOneHanded);
-       // Debug.Log(Hand1Y);
-        if (!string.IsNullOrEmpty(FilePath)) {
-                File.WriteAllText(FilePath.Replace(".png", ".json"), dataOneHanded);
-
-                string s = File.ReadAllText(FilePath.Replace(".png", ".json"));
-                s.Replace(",", ".");
-
-                File.WriteAllText(FilePath.Replace(".png", ".json"), s);
-
-                Debug.Log("nice, it (should have) worked");
-                onImportImagesPressed.SelectedTab.JsonHasBeenGenerated = true;
-        }
-        else
-        {
-            Debug.LogError("Shit, path was empty!");
-        }
-        }
-        else 
-        {
-            string XoffsetString = XOffset.text;
-         string YoffsetString = YOffset.text;
-
-        float XOffsetValue = float.Parse(XoffsetString);
-        float YOffsetValue = float.Parse(YoffsetString);
-         
-        float correctedXOffsetValue = XOffsetValue/16;
-        float correctedYOffsetValue = YOffsetValue/16;
-
-            //Hand1
-             float moveAmount = transform.right.x / 5.4f;
-        float distanceXHand1 = hand.transform.position.x - OnImportImagesPressed.readPoint.x;
-        var PixelsMovedHand1X = distanceXHand1 / moveAmount;
-        var RoundedPixelsMovedHand1X = Mathf.Round(PixelsMovedHand1X);
-
-        Hand1X = (RoundedPixelsMovedHand1X)/16;
-
-        float moveAmountY = transform.up.y / 5.4f;
-        float distanceYHand1 = hand.transform.position.y - OnImportImagesPressed.readPoint.y;
-        var PixelsMovedHand1Y = distanceYHand1 / moveAmountY;
-        var RoundedPixelsMovedHand1Y = Mathf.Round(PixelsMovedHand1Y);
-
-        Hand1Y = (RoundedPixelsMovedHand1Y)/16;
-
-        Hand1X += correctedXOffsetValue;
-        Hand1Y += correctedYOffsetValue;
-        bool isInt1X = Hand1X % 1 == 0;
-        bool isInt1Y = Hand1Y % 1 == 0;
-        if(isInt1X)
-            Hand1X+=0.00001;
-        if(isInt1Y)
-            Hand1Y+= 0.00001;
-        
-
-            //Hand2
-            float moveAmount2handed = transform.right.x / 5.4f;
-        float distanceXHand2 = hand2.transform.position.x - OnImportImagesPressed.readPoint.x;
-        var PixelsMovedHand2X = distanceXHand2 / moveAmount2handed;
-        var RoundedPixelsMovedHand2X = Mathf.Round(PixelsMovedHand2X);
-
-        Hand2X = (RoundedPixelsMovedHand2X)/16;
-
-        float moveAmount2handedY = transform.up.y / 5.4f;
-        float distanceYHand2 = hand2.transform.position.y - OnImportImagesPressed.readPoint.y;
-        var PixelsMovedHand2Y = distanceYHand2 / moveAmount2handedY;
-        var RoundedPixelsMovedHand2Y = Mathf.Round(PixelsMovedHand2Y);
-
-        Hand2Y = (RoundedPixelsMovedHand2Y)/16;
-
-        Hand2X += correctedXOffsetValue;
-        Hand2Y += correctedYOffsetValue;
-         bool isInt2X = Hand2X % 1 == 0;
-        bool isInt2Y = Hand2Y % 1 == 0;
-        if(isInt2X)
-            Hand2X+=0.00001;
-        if(isInt2Y)
-            Hand2Y+= 0.00001;
-
-        dataTwoHanded =
-        "\n{"+
-    "\n\"name\": null,"+
-  "\n\"x\": 0,"+
-  "\n\"y\": 0,"+
-  "\n\"width\": 10,"+
-  "\n\"height\": 24,"+
-  "\n\"flip\": 1," +
-  "\n\"attachPoints\": ["+
-    "\n{"+
-    "\n  \".\": \"arraytype\","+
-    "\n  \"name\": \"array\","+
-    "\n  \"size\": 4"+
-    "\n},"+
-    "\n{"+
-    "\n  \"name\": \"PrimaryHand\","+
-    "\n  \"position\": {"+
-   $"\n  \"x\": {Hand1X},"+
-   $"\n  \"y\": {Hand1Y},"+
-   $"\n  \"z\": 0.0"+
-    "\n  },"+
-    "\n  \"angle\": 0.0"+
-    "\n},"+
-    "\n{"+
-    "\n  \"name\": \"SecondaryHand\","+
-    "\n  \"position\": {"+
-   $"\n    \"x\": {Hand2X}," +
-   $"\n    \"y\": {Hand2Y}," +
-    "\n    \"z\": 0.0"+
-    "\n  },"+
-    "\n  \"angle\": 0.0"+
-    "\n},"+
-    "\n{"+
-    "\n  \"name\": \"Clip\","+
-    "\n  \"position\": {"+
-    "\n    \"x\": 0.625,"+
-    "\n    \"y\": 0.125," +
-    "\n    \"z\": 0.0" +
-    "\n  },"+
-    "\n  \"angle\": 0.0"+
-    "\n},"+
-    "\n{"+
-    "\n  \"name\": \"Casing\","+
-    "\n  \"position\": {"+
-    "\n    \"x\": 0.5625,"+
-    "\n    \"y\": 0.375,"+
-    "\n    \"z\": 0.0"+
-    "\n  },"+
-    "\n  \"angle\": 0.0"+
-    "\n}"+
-  "\n]"+
-"\n}";
-        
-            if (!string.IsNullOrEmpty(FilePath)) 
-            {
-                File.WriteAllText(FilePath.Replace(".png", ".json"), dataTwoHanded);
-
-                string s = File.ReadAllText(FilePath.Replace(".png", ".json"));
-                s.Replace(",", ".");
-
-                File.WriteAllText(FilePath.Replace(".png", ".json"), s);
-                Debug.Log("nice, it (should have) worked");
-                onImportImagesPressed.SelectedTab.JsonHasBeenGenerated = true;
-            }
-        else
-        {
-            Debug.LogError("Shit, path was empty!");
-        }
-        }
-    }
     [SerializeField]
-    OnImportImagesPressed onImportImagesPressed;
-    void Update()
+    private GameObject primaryHand;
+
+    [SerializeField]
+    private GameObject secondaryHand;
+
+    [SerializeField]
+    private Toggle twoHandToggle;
+
+    [SerializeField]
+    private TMP_InputField xOffset;
+
+    [SerializeField]
+    private TMP_InputField yOffset;
+
+    [SerializeField]
+    private OnImportImagesPressed onImportImagesPressedComponent;
+
+    private static readonly CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+    //this class is basically responsible for all of data file output
+   
+    public void OnCreateJsonAnimationPressed()
     {
-        if(onImportImagesPressed.SelectedTab != null)
+        for (int i = 0; i < MainSpriteController.instance.currentAnimation.frames.Length; i++)
         {
-        if(onImportImagesPressed.SelectedTab.JsonHasBeenGenerated == true)
-            CheckMark.SetActive(true); 
+            OutputFrameAsJson(MainSpriteController.instance.currentAnimation.frames[i]);
+        }
+        
+    }
+    public void OnCreateJsonPressed()
+    {
+        FrameInfo frameInfo = MainSpriteController.instance.currentFrame;
+        OutputFrameAsJson(frameInfo);
+    }
+    private void OutputFrameAsJson(FrameInfo info)
+    {
+        string data;
+        FrameInfo frameInfo = info;
+        FrameJsonInfo frameJsonInfo = new FrameJsonInfo();
+
+
+        frameJsonInfo.x = frameInfo.offsetX;
+        frameJsonInfo.y = frameInfo.offsetY;
+        frameJsonInfo.width = frameInfo.texture.width;
+        frameJsonInfo.height = frameInfo.texture.height;
+
+        List<object> attachPoints = new List<object>();
+        ArrayTypeUnkownAndSize iHonestlyDontKnowWhatToCallThisThing = new ArrayTypeUnkownAndSize(twoHandToggle.isOn ? 4 : 3);
+        attachPoints.Add(iHonestlyDontKnowWhatToCallThisThing);
+
+        var primaryHandX = (frameInfo.hand1PositionX + frameInfo.offsetX) / 16;
+        var primaryHandY = (frameInfo.hand1PositionY + frameInfo.offsetY) / 16;
+        attachPoints.Add(new AttachPoint("PrimaryHand", new PositionVector(primaryHandX, primaryHandY)));
+
+        if (frameInfo.isTwoHanded)
+        {
+            var secondaryHandX = (frameInfo.hand2PositionX + frameInfo.offsetX) / 16;
+            var secondaryHandY = (frameInfo.hand2PositionY + frameInfo.offsetY) / 16;
+            attachPoints.Add(new AttachPoint("SecondaryHand", new PositionVector(secondaryHandX, secondaryHandY)));
+        }
+
+        attachPoints.Add(new AttachPoint("Clip", new PositionVector(0.5625f, 0.375f)));
+        attachPoints.Add(new AttachPoint("Casing", new PositionVector(0.5625f, 0.375f)));
+
+        frameJsonInfo.attachPoints = attachPoints.ToArray();
+
+
+        data = JsonConvert.SerializeObject(frameJsonInfo, Formatting.Indented);
+
+
+        if (!string.IsNullOrEmpty(frameInfo.path))
+        {
+            if (!frameInfo.path.EndsWith(".png"))
+            {
+                frameInfo.path += ".png";
+            }
+            File.WriteAllText(frameInfo.path.Replace(".png", ".json"), data);
+            Debug.Log("nice, it (should have) worked");
+        }
         else
-            CheckMark.SetActive(false);
+        {
+            Debug.LogError("Shit, path was empty!");
+        }
+    }
+    public void GenerateOffsetCode()
+    {
+        GaeAnimationInfo animation = MainSpriteController.instance.currentAnimation;
+        if (animation != null)
+        {
+            StringBuilder builder = new StringBuilder("//make sure the animation name and variable names are correct, the program may have made the wrong decision \n" +
+                "tk2dSpriteAnimationClip animationclip = gun.sprite.spriteAnimator.GetClipByName(" + animation.animationName.Trim('_') + ");\n" +
+                "float[] offsetsX = new float[] {");
+            builder.Append((animation.frames[0].offsetX / 16).ToString("f4", culture));
+            for (int i = 1; i < animation.frames.Length; i++)
+            {
+                builder.Append(",");
+                builder.Append((animation.frames[i].offsetX / 16).ToString("f4", culture));
+            }
+            builder.Append("};\n");
+
+            builder.Append("float[] offsetsY = new float[] {");
+            builder.Append((animation.frames[0].offsetY / 16).ToString("f4", culture));
+            for (int i = 1; i < animation.frames.Length; i++)
+            {
+                builder.Append(",");
+                builder.Append((animation.frames[i].offsetY / 16).ToString("f4", culture));
+            }
+            builder.Append("};\n");
+            builder.Append("for (int i = 0; i < offsetsX.Length && i < offsetsY.Length && i < fireClip.frames.Length; i++)" +
+                "{" +
+                    "int id = fireClip.frames[i].spriteId;" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position0.x += offsetsX[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position0.y += offsetsY[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position1.x += offsetsX[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position1.y += offsetsY[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position2.x += offsetsX[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position2.y += offsetsY[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position3.x += offsetsX[i];" +
+                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position3.y += offsetsY[i];" +
+               " }");
+
+            if (!string.IsNullOrEmpty(animation.AnimationDirectory))
+            {
+                
+                File.WriteAllText(Path.Combine(animation.AnimationDirectory, animation.animationName+" offset code"+".txt"), builder.ToString());
+                Debug.Log("nice, it (should have) worked");
+            }
+            else
+            {
+                Debug.LogError("Shit, path was empty!");
+            }
+        }
+    }
+    public void GenerateBarrelPositionCode()
+    {
+        GaeAnimationInfo animation = MainSpriteController.instance.currentFrame.animationInfo;
+        FrameInfo info = MainSpriteController.instance.currentFrame;
+        if (animation != null)
+        {
+            if (!info.path.Contains("idle_001"))
+            {
+                Debug.Log("this shouldnt ever happen, but ill let it slide");
+            }
+            float barrelOffsetXString = info.muzzleflashPositionX / 16f;
+            float barrelOffsetYString = info.muzzleflashPositionY / 16f;
+
+            string offsetCode = $"gun.barrelOffset.localPosition = new Vector3({barrelOffsetXString}f, {barrelOffsetYString}f, 0f);"; 
+            if (!string.IsNullOrEmpty(animation.AnimationDirectory))
+            {
+
+                File.WriteAllText(Path.Combine(animation.AnimationDirectory, animation.animationName + " barrel offset code" + ".txt"), offsetCode);
+                Debug.Log("nice, it (should have) worked");
+            }
+            else
+            {
+                Debug.LogError("Shit, path was empty!");
+            }
+
         }
     }
 
-    public static string dataOneHanded;
-    public static string dataTwoHanded;
+    private void Update()
+    {
+    }
 }

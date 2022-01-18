@@ -97,7 +97,7 @@ public class MainSpriteController : MonoBehaviour
     private RectTransform MuzzleFlashObject;
     [SerializeField]
     private GameObject MuzzleFlashSign;
-    public void UpdateSprite(bool UpdateInputLabels)
+    public void UpdateSprite(bool UpdateInputLabels = false)
     {
 
         if (currentAnimation != null && currentFrame!= null)
@@ -155,8 +155,8 @@ public class MainSpriteController : MonoBehaviour
             {
                 //pulls both values before setting the variables because setting the input fields values triggers a "UpdateCurrentFrameHandData" call
                 //this is also why this bit of code is right near the end
-                string offsetx = currentFrame.offsetX.ToString("F4", culture);
-                string offsety = currentFrame.offsetY.ToString("F4", culture);
+                string offsetx = currentFrame.offsetX.ToString("F2", culture);
+                string offsety = currentFrame.offsetY.ToString("F2", culture);
                 xOffset.text = offsetx;
                 yOffset.text = offsety;
             }

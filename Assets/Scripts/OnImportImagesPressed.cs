@@ -35,7 +35,9 @@ public class OnImportImagesPressed : MonoBehaviour
         Image.SetNativeSize();      
               //  Image.transform.localScale = new Vector3(20,20, 1);   
     }
-    //responsible for loading up data from computer memory.
+
+
+    //loads up every image in the paths provided, creates matching frameInfo objects, and then creates an appropriate tab for each
     public void ImportSingleImages()
     {
         Image.sprite = DefaultTexture;
@@ -64,6 +66,7 @@ public class OnImportImagesPressed : MonoBehaviour
                 newButton.name = animationInfo.animationName + " button";
                 RectTransform buttonRectTransform = newButton.GetComponent<RectTransform>();
                 buttonRectTransform.localPosition = new Vector3(0, 0, 0);
+
                 float ratio = tabArea.rect.width / buttonRectTransform.rect.width;
                 newButton.transform.localScale = new Vector3(ratio, ratio, 1f);
 
@@ -79,6 +82,7 @@ public class OnImportImagesPressed : MonoBehaviour
         }
     }
     
+    //similiar to importSingleImages, however it only has one path, and attempts to find other matching files based on that. loads all the frame info objects into a single tab
    public void ImportAnimation()
    {
         Image.sprite = DefaultTexture;
@@ -103,14 +107,16 @@ public class OnImportImagesPressed : MonoBehaviour
             animationInfo.animationName = RemoveTrailingDigits(Path.GetFileNameWithoutExtension(files[0].FullName));
 
   
-            RectTransform content = StaticRefrences.Instance.TabArea.GetComponent<ScrollRect>().content;
+            RectTransform viewPort = StaticRefrences.Instance.TabArea.GetComponent<ScrollRect>().content;
             RectTransform tabArea = StaticRefrences.Instance.TabArea.GetComponent<RectTransform>();
 
-            var newButton = Instantiate(ImgTabPrefab, content,false);
+            var newButton = Instantiate(ImgTabPrefab, viewPort,false);
             newButton.name = animationInfo.animationName+" button";
             RectTransform buttonRectTransform = newButton.GetComponent<RectTransform>();
             buttonRectTransform.localPosition = new Vector3(0,0,0);
+
             float ratio = tabArea.rect.width / buttonRectTransform.rect.width;
+
             newButton.transform.localScale = new Vector3(ratio, ratio, 1f);
            
             TabDisplay newButtonTabDisplay = newButton.GetComponent<TabDisplay>();
@@ -133,6 +139,7 @@ public class OnImportImagesPressed : MonoBehaviour
         }
         return path.Substring(0, firstNumberIndex);
     }
+    //this method attempts to load the image as well as a corrosponding json file, and create a matching FrameInfo object based off of those
     private FrameInfo LoadSingleFrame(string path,GaeAnimationInfo animationInfo)
     {
         path = System.IO.Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));

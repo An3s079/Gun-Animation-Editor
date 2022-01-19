@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Globalization;
+using UnityEngine.EventSystems;
 
-
-public class MainSpriteController : MonoBehaviour
+public class MainSpriteController : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     public Image mainSprite;
     private GaeAnimationInfo currentAnimationInfo;
@@ -97,6 +97,12 @@ public class MainSpriteController : MonoBehaviour
     private RectTransform MuzzleFlashObject;
     [SerializeField]
     private GameObject MuzzleFlashSign;
+    [SerializeField]
+    private RectTransform rectTransform;
+    [SerializeField]
+    private Canvas canvas;
+
+    private Vector2 posOffset = new Vector2(0, 0);
     public void UpdateSprite(bool UpdateInputLabels = false)
     {
 
@@ -109,7 +115,7 @@ public class MainSpriteController : MonoBehaviour
 
             Vector2 anchoredPos = mainSprite.rectTransform.anchoredPosition;
             
-            Vector2 pos = new Vector2(-mainSprite.sprite.rect.width / 2 * StaticRefrences.zoomScale, -mainSprite.sprite.rect.height / 2 * StaticRefrences.zoomScale);
+            Vector2 pos = new Vector2(-mainSprite.sprite.rect.width / 2 * StaticRefrences.zoomScale,-mainSprite.sprite.rect.height / 2 * StaticRefrences.zoomScale) + posOffset;
             
             pos = new Vector2(Mathf.Round(pos.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale, Mathf.Round(pos.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale);
 
@@ -170,6 +176,39 @@ public class MainSpriteController : MonoBehaviour
             MuzzleFlashSign.SetActive(false);
         }
     }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Middle)
+        {
+            posOffset += eventData.delta / canvas.scaleFactor;
+            UpdateSprite(false);
+        }
+    }
+
+    void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
+    {
+
+    }
+
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Middle)
+        {
+          /*  Vector2 position = rectTransform.anchoredPosition;
+            int roundX = Mathf.RoundToInt(position.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            int roundY = Mathf.RoundToInt(position.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            position = new Vector2(roundX, roundY);
+            //-mainSprite.sprite.rect.width / 2 * StaticRefrences.zoomScale,posOffsetY + -mainSprite.sprite.rect.height / 2 * StaticRefrences.zoomScale);
+
+            posOffsetX = roundX + (int)(-mainSprite.sprite.rect.width / 2 * StaticRefrences.zoomScale);
+            posOffsetY = roundY + roundX + (int)(-mainSprite.sprite.rect.height / 2 * StaticRefrences.zoomScale);
+            rectTransform.anchoredPosition = position;
+            MainSpriteController.instance.UpdateCurrentFrameHandData();
+            MainSpriteController.instance.UpdateSprite(true);*/
+        }
+    }
+
     public FrameInfo currentFrame 
     {
         get

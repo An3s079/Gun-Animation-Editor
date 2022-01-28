@@ -16,7 +16,7 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        DefaultGungeoneerPos = gungeoneer.anchoredPosition;
     }
 
     // Update is called once per frame
@@ -35,6 +35,17 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     private RectTransform hand2;
     [SerializeField]
     private RectTransform gungeoneer;
+    private Vector2 DefaultGungeoneerPos = new Vector2(0, 0);
+
+    [SerializeField]
+    private TMP_InputField InitialXOffset;
+
+    [SerializeField]
+    private TMP_InputField InitailYOffset;
+    [SerializeField]
+    private TMP_InputField FrameRate;
+    [SerializeField]
+    private TMP_InputField FrameCounter;
 
     private Vector2 posOffset = new Vector2(0, 0);
     public void UpdateSprite()
@@ -73,8 +84,8 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     public void UpdateOffsets()
     {
         int zoom = StaticRefrences.zoomScale;
-        currentFrame.offsetX = (hand1.anchoredPosition.x - gungeoneer.anchoredPosition.x) / zoom;
-        currentFrame.offsetY = (hand1.anchoredPosition.y - gungeoneer.anchoredPosition.y) / zoom;
+        currentFrame.offsetX = (DisplaySprite.rectTransform.anchoredPosition.x - gungeoneer.anchoredPosition.x) / zoom;
+        currentFrame.offsetY = (DisplaySprite.rectTransform.anchoredPosition.y - gungeoneer.anchoredPosition.y) / zoom;
     }
 
     public void Close()

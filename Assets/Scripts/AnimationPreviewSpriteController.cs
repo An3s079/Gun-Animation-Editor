@@ -45,7 +45,7 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     [SerializeField]
     private TMP_InputField initialYOffset;
     [SerializeField]
-    private TMP_InputField frameRate;
+    private TMP_InputField frameRateInputLabel;
     [SerializeField]
     private TextMeshProUGUI frameCounter;
 
@@ -82,6 +82,11 @@ public class AnimationPreviewSpriteController : MonoBehaviour
         }
     }
 
+    int framerate = 12;
+    public void UpdateFramerate()
+    {
+        int.TryParse(frameRateInputLabel.text,out framerate);
+    }
     public void UpdateInitialOffsets()
     {
         float x = 0;
@@ -101,15 +106,18 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     public void Open()
     {
         parentPanel.SetActive(true);
+        UpdateInitialOffsets();
+        UpdateFramerate();
         UpdateSprite();
     }
     public void Close()
     {
         gungeoneer.anchoredPosition = defaultGungeoneerPos;
         StopAllCoroutines();
-        initialXOffset.text = "0";
-        initialYOffset.text = "0";
-        frameRate.text = "12";
+        //initialXOffset.text = "0";
+        //initialYOffset.text = "0";
+        //frameRateInputLabel.text = "12";
+        //framerate = 12;
         frameCounter.text = "1";
         index = 0;
         parentPanel.SetActive(false);
@@ -121,11 +129,15 @@ public class AnimationPreviewSpriteController : MonoBehaviour
         frameCycleCoroutine = CycleFrames();
         StartCoroutine(frameCycleCoroutine);
     }
+    public void StopFrameCycle()
+    {
+        StopAllCoroutines();
+    }
     IEnumerator CycleFrames()
     {
         while(true)
         {
-            yield return new WaitForSecondsRealtime(1f / 12f);
+            yield return new WaitForSecondsRealtime(1f/ framerate);
             NextFrame();
         }
     }

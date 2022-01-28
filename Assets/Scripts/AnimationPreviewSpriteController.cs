@@ -36,6 +36,8 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     [SerializeField]
     private RectTransform gungeoneer;
     private Vector2 defaultGungeoneerPos = new Vector2(0, 0);
+    [SerializeField]
+    GameObject parentPanel;
 
     [SerializeField]
     private TMP_InputField initialXOffset;
@@ -46,6 +48,8 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     private TMP_InputField frameRate;
     [SerializeField]
     private TextMeshProUGUI frameCounter;
+
+    private Vector2 initialOffset = Vector2.zero;
 
     private Vector2 posOffset = new Vector2(0, 0);
     public void UpdateSprite()
@@ -59,10 +63,8 @@ public class AnimationPreviewSpriteController : MonoBehaviour
 
             Vector2 anchoredPos = DisplaySprite.rectTransform.anchoredPosition;
             //currently centers sprite, should actully offset sprite based on gungeoneer pos.
-            Vector2 pos = new Vector2(-DisplaySprite.sprite.rect.width / 2 * StaticRefrences.zoomScale, -DisplaySprite.sprite.rect.height / 2 * StaticRefrences.zoomScale) + posOffset;
-            
-            pos = new Vector2(Mathf.Round(pos.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale, Mathf.Round(pos.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale);
-            pos = gungeoneer.anchoredPosition + new Vector2(currentFrame.offsetX*StaticRefrences.zoomScale, currentFrame.offsetY * StaticRefrences.zoomScale);
+
+            Vector2 pos = gungeoneer.anchoredPosition + (new Vector2(currentFrame.offsetX, currentFrame.offsetY) + initialOffset) * StaticRefrences.zoomScale;
             DisplaySprite.rectTransform.anchoredPosition = pos;
 
             hand2.gameObject.SetActive(currentFrame.isTwoHanded);
@@ -73,14 +75,22 @@ public class AnimationPreviewSpriteController : MonoBehaviour
             hand1.anchoredPosition = handpos1;
             hand2.anchoredPosition = handpos2;
 
-
-            /*if (frameCounter != null)
+            if (frameCounter != null)
             {
                 frameCounter.text = (index + 1).ToString();
-            }*/
+            }
         }
     }
 
+    public void UpdateInitialOffsets()
+    {
+        float x = 0;
+        float y = 0;
+        float.TryParse(initialXOffset.text, out x);
+        float.TryParse(initialYOffset.text, out y);
+        initialOffset = new Vector2(x, y);
+        UpdateSprite();
+    }
     public void UpdateOffsets()
     {
         int zoom = StaticRefrences.zoomScale;
@@ -90,7 +100,7 @@ public class AnimationPreviewSpriteController : MonoBehaviour
 
     public void Open()
     {
-        gameObject.SetActive(true);
+        parentPanel.SetActive(true);
         UpdateSprite();
     }
     public void Close()
@@ -102,7 +112,7 @@ public class AnimationPreviewSpriteController : MonoBehaviour
         frameRate.text = "12";
         frameCounter.text = "1";
         index = 0;
-        gameObject.SetActive(false);
+        parentPanel.SetActive(false);
     }
 
     IEnumerator frameCycleCoroutine;

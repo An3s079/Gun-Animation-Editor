@@ -92,8 +92,6 @@ public class MainSpriteController : MonoBehaviour, IDragHandler, IBeginDragHandl
     [SerializeField]
     private GameObject barreGenButton;
     [SerializeField]
-    private GameObject barrelInfoButton;
-    [SerializeField]
     private RectTransform MuzzleFlashObject;
     [SerializeField]
     private GameObject MuzzleFlashSign;
@@ -119,12 +117,6 @@ public class MainSpriteController : MonoBehaviour, IDragHandler, IBeginDragHandl
             
             pos = new Vector2(Mathf.Round(pos.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale, Mathf.Round(pos.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale);
 
-            if (StaticRefrences.Instance.IsGungeoneerOn.isOn)
-            {
-                pos = StaticRefrences.Instance.Gungeoneer.anchoredPosition;
-                pos = new Vector2(pos.x + currentFrame.offsetX* StaticRefrences.zoomScale, pos.y + currentFrame.offsetY* StaticRefrences.zoomScale);
-            }
-
             mainSprite.rectTransform.anchoredPosition = pos;
             
             Vector2 handpos1 = new Vector2(pos.x + currentFrame.hand1PositionX * StaticRefrences.zoomScale, pos.y + currentFrame.hand1PositionY * StaticRefrences.zoomScale);
@@ -133,14 +125,12 @@ public class MainSpriteController : MonoBehaviour, IDragHandler, IBeginDragHandl
             StaticRefrences.Instance.handIMG.rectTransform.anchoredPosition = handpos1;
             StaticRefrences.Instance.handIMG2.rectTransform.anchoredPosition = handpos2;
             StaticRefrences.Instance.IsTwoHanded.isOn = currentFrame.isTwoHanded;
-            if(barrelInfoButton != null && barreGenButton != null && MuzzleFlashObject != null)
+            if(barreGenButton != null && MuzzleFlashObject != null)
             {
                 if (currentFrame.path.Contains("idle_001"))
                 {
                     barreGenButton.SetActive(true);
-                    barrelInfoButton.SetActive(true);
                     MuzzleFlashObject.gameObject.SetActive(true);
-                    MuzzleFlashSign.SetActive(true);
                     int zoomscale = StaticRefrences.zoomScale;
                     Vector2 muzzlepos = new Vector2(pos.x + currentFrame.muzzleflashPositionX * zoomscale, pos.y + currentFrame.muzzleflashPositionY * zoomscale);
                     MuzzleFlashObject.anchoredPosition = muzzlepos;
@@ -148,9 +138,7 @@ public class MainSpriteController : MonoBehaviour, IDragHandler, IBeginDragHandl
                 else
                 {
                     barreGenButton.SetActive(false);
-                    barrelInfoButton.SetActive(false);
                     MuzzleFlashObject.gameObject.SetActive(false);
-                    MuzzleFlashSign.SetActive(false);
                 }
             }
             if (frameCounter != null)
@@ -168,12 +156,10 @@ public class MainSpriteController : MonoBehaviour, IDragHandler, IBeginDragHandl
             }
 
         }
-        else if (barrelInfoButton != null && barreGenButton != null && MuzzleFlashObject != null)
+        else if (barreGenButton != null && MuzzleFlashObject != null)
         {
             barreGenButton.SetActive(false);
-            barrelInfoButton.SetActive(false);
             MuzzleFlashObject.gameObject.SetActive(false);
-            MuzzleFlashSign.SetActive(false);
         }
     }
 

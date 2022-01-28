@@ -15,8 +15,6 @@ public class GungeooneerDragBehavior : MonoBehaviour, IDragHandler, IBeginDragHa
     [SerializeField]
     private RectTransform rectTransform;
     [SerializeField]
-    private RectTransform GungeoneerTransform;
-    [SerializeField]
     private AnimationPreviewSpriteController animationPreview;
 
     private void Start()
@@ -44,13 +42,12 @@ public class GungeooneerDragBehavior : MonoBehaviour, IDragHandler, IBeginDragHa
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        Vector2 positionDiff = (rectTransform.anchoredPosition - GungeoneerTransform.anchoredPosition) / StaticRefrences.zoomScale;
-        int roundX = Mathf.RoundToInt(positionDiff.x) * StaticRefrences.zoomScale;
-        int roundY = Mathf.RoundToInt(positionDiff.y) * StaticRefrences.zoomScale;
-        rectTransform.anchoredPosition = new Vector2(roundX, roundY) + GungeoneerTransform.anchoredPosition;
-        animationPreview.UpdateOffsets();
+
+        Vector2 position = rectTransform.anchoredPosition;
+        int roundX = Mathf.RoundToInt(position.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+        int roundY = Mathf.RoundToInt(position.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+        position = new Vector2(roundX, roundY);
+        rectTransform.anchoredPosition = position;
         animationPreview.UpdateSprite();
-        //incosnistent use of static refrences and local refrences, why am i doing this?
-        StaticRefrences.Instance.spriteController.UpdateSprite(true);
     }
 }

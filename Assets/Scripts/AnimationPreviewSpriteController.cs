@@ -16,7 +16,7 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DefaultGungeoneerPos = gungeoneer.anchoredPosition;
+        defaultGungeoneerPos = gungeoneer.anchoredPosition;
     }
 
     // Update is called once per frame
@@ -35,17 +35,17 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     private RectTransform hand2;
     [SerializeField]
     private RectTransform gungeoneer;
-    private Vector2 DefaultGungeoneerPos = new Vector2(0, 0);
+    private Vector2 defaultGungeoneerPos = new Vector2(0, 0);
 
     [SerializeField]
-    private TMP_InputField InitialXOffset;
+    private TMP_InputField initialXOffset;
 
     [SerializeField]
-    private TMP_InputField InitailYOffset;
+    private TMP_InputField initialYOffset;
     [SerializeField]
-    private TMP_InputField FrameRate;
+    private TMP_InputField frameRate;
     [SerializeField]
-    private TMP_InputField FrameCounter;
+    private TextMeshProUGUI frameCounter;
 
     private Vector2 posOffset = new Vector2(0, 0);
     public void UpdateSprite()
@@ -88,9 +88,21 @@ public class AnimationPreviewSpriteController : MonoBehaviour
         currentFrame.offsetY = (DisplaySprite.rectTransform.anchoredPosition.y - gungeoneer.anchoredPosition.y) / zoom;
     }
 
+    public void Open()
+    {
+        gameObject.SetActive(true);
+        UpdateSprite();
+    }
     public void Close()
     {
-
+        gungeoneer.anchoredPosition = defaultGungeoneerPos;
+        StopAllCoroutines();
+        initialXOffset.text = "0";
+        initialYOffset.text = "0";
+        frameRate.text = "12";
+        frameCounter.text = "1";
+        index = 0;
+        gameObject.SetActive(false);
     }
 
     IEnumerator frameCycleCoroutine;

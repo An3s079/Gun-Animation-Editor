@@ -94,7 +94,7 @@ public class OnImportImagesPressed : MonoBehaviour
             string fileName = Path.GetFileNameWithoutExtension(paths[0]);
 
             string animationName = RemoveTrailingDigits(fileName);
-            FileInfo[] files = info.Directory.GetFiles(animationName + "*.png");
+            FileInfo[] files = info.Directory.GetFiles(animationName + "_*.png");
            
             GaeAnimationInfo animationInfo = new GaeAnimationInfo();
             animationInfo.AnimationDirectory = info.DirectoryName;

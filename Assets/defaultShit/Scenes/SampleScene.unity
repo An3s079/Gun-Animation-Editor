@@ -2274,9 +2274,13 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Two handed mode. \nAllows creating jsons for 2 handed animations.\nGenerally
     the game breaks when some frames in an animations have 2 hands and some not so
-    the option will set the entire animation's mode to either two handed or one handed.\nWhen
-    loading sprite data from jsons, if even a single sprite is 2 handed then two
-    handed mode will be turned on."
+    the option will set the entire single animation youre working on either two handed
+    or one handed.\nWhen loading sprite data from jsons, if even a single sprite
+    is 2 handed then two handed mode will be turned on.\n\nyou can set ALL animations
+    in ALL tabs to either one handed or two handed by clicking the arrow, and the
+    matching button in the pop up tab. this is useful if youre working on a gun that
+    is two handed and want to set many animations at once, or if you like to load
+    your frames into a multiple tabs."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -2303,7 +2307,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 47.6
+  m_fontSize: 36.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2391,8 +2395,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -322, y: 50}
-  m_SizeDelta: {x: 406.57605, y: 60}
+  m_AnchoredPosition: {x: -311.7, y: 50}
+  m_SizeDelta: {x: 406.57605, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &223839992
 MonoBehaviour:
@@ -2819,7 +2823,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -39.2, y: 0}
-  m_SizeDelta: {x: 75.02002, y: 60}
+  m_SizeDelta: {x: 75, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &235495288
 MonoBehaviour:
@@ -4010,8 +4014,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 146.07, y: 0}
-  m_SizeDelta: {x: 130.42175, y: 57}
+  m_AnchoredPosition: {x: 140, y: 0}
+  m_SizeDelta: {x: 130, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &320241265
 MonoBehaviour:
@@ -4062,7 +4066,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33.85
+  m_fontSize: 33.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6634,7 +6638,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &519490963
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7841,6 +7845,7 @@ MonoBehaviour:
   - {fileID: 447484449}
   - {fileID: 1767987568}
   inputField: {fileID: 1116388522}
+  previewController: {fileID: 0}
 --- !u!114 &666470123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12947,14 +12952,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12989,8 +12994,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -69, y: 51}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: -83.19995, y: 50}
+  m_SizeDelta: {x: 50, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1042125932
 GameObject:
@@ -16287,7 +16292,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 70, y: 60}
+  m_SizeDelta: {x: 70, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1478696418
 MonoBehaviour:
@@ -16424,8 +16429,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -68.999954, y: 51.000015}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: -83.199905, y: 50}
+  m_SizeDelta: {x: 50, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1487140999
 MonoBehaviour:
@@ -16519,14 +16524,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -17651,7 +17656,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 37.399952, y: 0}
-  m_SizeDelta: {x: 70, y: 60}
+  m_SizeDelta: {x: 70, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1582328908
 MonoBehaviour:
@@ -19310,7 +19315,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 70, y: 60}
+  m_SizeDelta: {x: 75, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1728964410
 MonoBehaviour:
@@ -19361,7 +19366,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.65
+  m_fontSize: 34.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -23191,8 +23196,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.4, y: 115.7}
-  m_SizeDelta: {x: 985.86584, y: 581.9905}
+  m_AnchoredPosition: {x: -4.4, y: 56.348}
+  m_SizeDelta: {x: 985.86584, y: 700.6953}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2030397422
 MonoBehaviour:
@@ -23218,12 +23223,14 @@ MonoBehaviour:
     Will generate every frame in all tabs loaded.\n\nGenerate Animation Json : This
     will attempt generating a json file for every frame in the animation currently
     displayed on screen.\n\nGenerate Single Json:this will attempt to generate a
-    json only for the frame currently on screen. useful if you loaded a full animation
-    but only want to generate a single json.\n\nGenerate Offset Code: this should
+    json only for the frame currently on screen.\n\nGenerate Offset Code: this should
     generate semi- usable code to offset guns in game. it should generate a txt file
     names \"<animation name> offset code.txt\" in the same directory as the animation.\nuseful
     as it does the offset calculation conversion for you, and should be in perfect
-    sync with hand placement without mistake."
+    sync with hand placement without mistake.\n\ngenerate barrel offset : is available
+    only when working on idle_001. should pop up automatically when working on a
+    frame with \"idle_001\" in its name. generates semi-useable code like offsets
+    that lets you offset barrel muzzleflash and such."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -23250,7 +23257,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.65
+  m_fontSize: 30.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -23774,10 +23781,10 @@ RectTransform:
   m_Father: {fileID: 223839991}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -144, y: -0.5}
-  m_SizeDelta: {x: -287.99347, y: -3}
+  m_SizeDelta: {x: 120, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2086200723
 MonoBehaviour:

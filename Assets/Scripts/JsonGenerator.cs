@@ -9,6 +9,10 @@ using System.Text;
 using System;
 using System.Collections;
 
+//so ive noticed each generator button has an individual instance of this script, and i think that should probably be changed to a single instance on some game object, or a static refrence
+//especially since each instance needs its own variables for a lot of stuff. 
+//this is great if you want each instance to use something different, (like different success and failure indicators), but could still be simplified into a few game objects dedicated to this behavior instead of being a component of the button
+//so long winded note for future me or whatever poor soul has to update this mess, put a single jsongenerator component on an empty gameobject and drag it into the buttons
 public class JsonGenerator : MonoBehaviour
 {
     public static string dataOneHanded;
@@ -144,10 +148,10 @@ public class JsonGenerator : MonoBehaviour
         GaeAnimationInfo animation = MainSpriteController.instance.currentAnimation;
         if (animation != null)
         {
-            StringBuilder builder = new StringBuilder("//make sure the animation name and variable names are correct, the program may have made the wrong decision \n" +
-                "// it is better to be getting your clips like so \"gun.sprite.spriteAnimator.GetClipByName(gun.shootAnimation);\" and vary the animation name of course" +
-                "tk2dSpriteAnimationClip animationclip = gun.sprite.spriteAnimator.GetClipByName(" + animation.animationName.Trim('_') + ");\n" +
-                "float[] offsetsX = new float[] {");
+            StringBuilder builder = new StringBuilder("//make sure the animation name and variable names are correct, the program may have made the wrong decision \n");
+            builder.Append("// it is better to be getting your clips like so \"gun.sprite.spriteAnimator.GetClipByName(gun.shootAnimation);\" and vary the animation name of course\n");
+            builder.Append("tk2dSpriteAnimationClip animationclip = gun.sprite.spriteAnimator.GetClipByName(\"" + animation.animationName.Trim('_') + "\");\n");
+            builder.Append("float[] offsetsX = new float[] {");
             builder.Append((animation.frames[0].offsetX / 16).ToString("f4", culture));
             builder.Append("f");
             for (int i = 1; i < animation.frames.Length; i++)
@@ -168,18 +172,37 @@ public class JsonGenerator : MonoBehaviour
                 builder.Append("f");
             }
             builder.Append("};\n");
-            builder.Append("for (int i = 0; i < offsetsX.Length && i < offsetsY.Length && i < animationclip.frames.Length; i++)" +
-                "{" +
-                    "int id = animationclip.frames[i].spriteId;" +
-                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position0.x += offsetsX[i];" +
-                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position0.y += offsetsY[i];" +
-                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position1.x += offsetsX[i];" +
-                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position1.y += offsetsY[i];" +
-                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position2.x += offsetsX[i];" +
-                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position2.y += offsetsY[i];" +
-                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position3.x += offsetsX[i];" +
-                    "animationclip.frames[i].spriteCollection.spriteDefinitions[id].position3.y += offsetsY[i];" +
-               " }");
+            builder.Append("//simple method \n");
+            builder.Append("for (int i = 0; i < offsetsX.Length && i < offsetsY.Length && i < animationclip.frames.Length; i++)");
+            builder.Append("{");
+            builder.Append("int id = animationclip.frames[i].spriteId;");
+            builder.Append("tk2dSpriteDefinition def = frames.spriteCollection.spriteDefinitions[id];");
+            builder.Append("Vector2 offset = new Vector2(offsetsX[i],offsetsY[i]);");
+            builder.Append("def.position0 += offset;");
+            builder.Append("def.position1 += offset;");
+            builder.Append("def.position2 += offset;");
+            builder.Append("def.position3 += offset;");
+            builder.Append("}\n\n");
+
+            builder.Append("//it is reccomended you keep a cleaner more maintainable code by doing this\n");
+            builder.Append("//first add this method to your toolbox\n\n");
+
+            builder.Append("static void AddOffsetToTk2DFrame(tk2dSpriteAnimationFrame frame, Vector2 offset)\n");
+            builder.Append("for (int i = 0; i < offsetsX.Length && i < offsetsY.Length && i < animationclip.frames.Length; i++)\n");
+            builder.Append("{\n");
+            builder.Append("\tint id = animationclip.frames[i].spriteId;\n");
+            builder.Append("\ttk2dSpriteDefinition def = frames.spriteCollection.spriteDefinitions[id];\n");
+            builder.Append("\tdef.position0 += offset;\n");
+            builder.Append("\tdef.position1 += offset;\n");
+            builder.Append("\tdef.position2 += offset;\n");
+            builder.Append("\tdef.position3 += offset;\n");
+            builder.Append("}\n\n");
+
+            builder.Append("//then you can this \n");
+            builder.Append("for (int i = 0; i < offsetsX.Length && i < offsetsY.Length && i < animationclip.frames.Length; i++)\n");
+            builder.Append("{\n");
+            builder.Append("\tyourToolBox.AddOffsetToTk2DFrame(animationclip.frames[i],new Vector2(offsetsX[i],offsetsY[i]));\n");
+            builder.Append("}");
 
             if (!string.IsNullOrEmpty(animation.AnimationDirectory))
             {

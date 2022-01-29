@@ -1757,7 +1757,7 @@ GameObject:
   - component: {fileID: 140226110}
   - component: {fileID: 140226109}
   m_Layer: 5
-  m_Name: Image
+  m_Name: hand1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7846,7 +7846,7 @@ MonoBehaviour:
   - {fileID: 447484449}
   - {fileID: 1767987568}
   inputField: {fileID: 1116388522}
-  previewController: {fileID: 0}
+  previewController: {fileID: 78377312}
 --- !u!114 &666470123
 MonoBehaviour:
   m_ObjectHideFlags: 0

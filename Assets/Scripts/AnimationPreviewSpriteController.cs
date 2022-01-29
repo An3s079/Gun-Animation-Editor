@@ -137,7 +137,14 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     {
         while(true)
         {
-            yield return new WaitForSecondsRealtime(1f/ framerate);
+            if (framerate > 0)
+            {
+                yield return new WaitForSecondsRealtime(1f / framerate);
+            }
+            else
+            {
+                yield return new WaitForSecondsRealtime(1f / 12f);
+            }
             NextFrame();
         }
     }

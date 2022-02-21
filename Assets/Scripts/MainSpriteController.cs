@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Globalization;
+using UnityEngine.EventSystems;
 
-
-public class MainSpriteController : MonoBehaviour
+public class MainSpriteController : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     public Image mainSprite;
     private GaeAnimationInfo currentAnimationInfo;
@@ -92,12 +92,16 @@ public class MainSpriteController : MonoBehaviour
     [SerializeField]
     private GameObject barreGenButton;
     [SerializeField]
-    private GameObject barrelInfoButton;
-    [SerializeField]
     private RectTransform MuzzleFlashObject;
     [SerializeField]
     private GameObject MuzzleFlashSign;
-    public void UpdateSprite(bool UpdateInputLabels)
+    [SerializeField]
+    private RectTransform rectTransform;
+    [SerializeField]
+    private Canvas canvas;
+
+    private Vector2 posOffset = new Vector2(0, 0);
+    public void UpdateSprite(bool UpdateInputLabels = false)
     {
 
         if (currentAnimation != null && currentFrame!= null)
@@ -109,15 +113,9 @@ public class MainSpriteController : MonoBehaviour
 
             Vector2 anchoredPos = mainSprite.rectTransform.anchoredPosition;
             
-            Vector2 pos = new Vector2(-mainSprite.sprite.rect.width / 2 * StaticRefrences.zoomScale, -mainSprite.sprite.rect.height / 2 * StaticRefrences.zoomScale);
+            Vector2 pos = new Vector2(-mainSprite.sprite.rect.width / 2 * StaticRefrences.zoomScale,-mainSprite.sprite.rect.height / 2 * StaticRefrences.zoomScale) + posOffset;
             
             pos = new Vector2(Mathf.Round(pos.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale, Mathf.Round(pos.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale);
-
-            if (StaticRefrences.Instance.IsGungeoneerOn.isOn)
-            {
-                pos = StaticRefrences.Instance.Gungeoneer.anchoredPosition;
-                pos = new Vector2(pos.x + currentFrame.offsetX* StaticRefrences.zoomScale, pos.y + currentFrame.offsetY* StaticRefrences.zoomScale);
-            }
 
             mainSprite.rectTransform.anchoredPosition = pos;
             
@@ -127,14 +125,12 @@ public class MainSpriteController : MonoBehaviour
             StaticRefrences.Instance.handIMG.rectTransform.anchoredPosition = handpos1;
             StaticRefrences.Instance.handIMG2.rectTransform.anchoredPosition = handpos2;
             StaticRefrences.Instance.IsTwoHanded.isOn = currentFrame.isTwoHanded;
-            if(barrelInfoButton != null && barreGenButton != null && MuzzleFlashObject != null)
+            if(barreGenButton != null && MuzzleFlashObject != null)
             {
                 if (currentFrame.path.Contains("idle_001"))
                 {
                     barreGenButton.SetActive(true);
-                    barrelInfoButton.SetActive(true);
                     MuzzleFlashObject.gameObject.SetActive(true);
-                    MuzzleFlashSign.SetActive(true);
                     int zoomscale = StaticRefrences.zoomScale;
                     Vector2 muzzlepos = new Vector2(pos.x + currentFrame.muzzleflashPositionX * zoomscale, pos.y + currentFrame.muzzleflashPositionY * zoomscale);
                     MuzzleFlashObject.anchoredPosition = muzzlepos;
@@ -142,9 +138,7 @@ public class MainSpriteController : MonoBehaviour
                 else
                 {
                     barreGenButton.SetActive(false);
-                    barrelInfoButton.SetActive(false);
                     MuzzleFlashObject.gameObject.SetActive(false);
-                    MuzzleFlashSign.SetActive(false);
                 }
             }
             if (frameCounter != null)
@@ -155,21 +149,52 @@ public class MainSpriteController : MonoBehaviour
             {
                 //pulls both values before setting the variables because setting the input fields values triggers a "UpdateCurrentFrameHandData" call
                 //this is also why this bit of code is right near the end
-                string offsetx = currentFrame.offsetX.ToString("F4", culture);
-                string offsety = currentFrame.offsetY.ToString("F4", culture);
+                string offsetx = currentFrame.offsetX.ToString("F2", culture);
+                string offsety = currentFrame.offsetY.ToString("F2", culture);
                 xOffset.text = offsetx;
                 yOffset.text = offsety;
             }
 
         }
-        else if (barrelInfoButton != null && barreGenButton != null && MuzzleFlashObject != null)
+        else if (barreGenButton != null && MuzzleFlashObject != null)
         {
             barreGenButton.SetActive(false);
-            barrelInfoButton.SetActive(false);
             MuzzleFlashObject.gameObject.SetActive(false);
-            MuzzleFlashSign.SetActive(false);
         }
     }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Middle)
+        {
+            posOffset += eventData.delta / canvas.scaleFactor;
+            UpdateSprite(false);
+        }
+    }
+
+    void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
+    {
+
+    }
+
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Middle)
+        {
+          /*  Vector2 position = rectTransform.anchoredPosition;
+            int roundX = Mathf.RoundToInt(position.x / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            int roundY = Mathf.RoundToInt(position.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
+            position = new Vector2(roundX, roundY);
+            //-mainSprite.sprite.rect.width / 2 * StaticRefrences.zoomScale,posOffsetY + -mainSprite.sprite.rect.height / 2 * StaticRefrences.zoomScale);
+
+            posOffsetX = roundX + (int)(-mainSprite.sprite.rect.width / 2 * StaticRefrences.zoomScale);
+            posOffsetY = roundY + roundX + (int)(-mainSprite.sprite.rect.height / 2 * StaticRefrences.zoomScale);
+            rectTransform.anchoredPosition = position;
+            MainSpriteController.instance.UpdateCurrentFrameHandData();
+            MainSpriteController.instance.UpdateSprite(true);*/
+        }
+    }
+
     public FrameInfo currentFrame 
     {
         get

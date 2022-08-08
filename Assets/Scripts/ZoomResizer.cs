@@ -9,9 +9,6 @@ public class ZoomResizer : MonoBehaviour
     [SerializeField]
     private TMP_InputField inputField;
 
-    //inconsistent use of static refrences and dynmic unity ones, bad practice probably
-    [SerializeField]
-    private AnimationPreviewSpriteController previewController;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,7 +49,7 @@ public class ZoomResizer : MonoBehaviour
             Resizeables[i].localScale = new Vector3(scale, scale, scale);
             StaticRefrences.zoomScale = scale;
             MainSpriteController.instance.UpdateSprite(false);
-            previewController.UpdateSprite();
+            StaticRefrences.Instance.previewController.UpdateSprite();
         }
         if (inputField != null)
         {

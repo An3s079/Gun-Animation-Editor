@@ -17,6 +17,7 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     void Start()
     {
         defaultGungeoneerPos = gungeoneer.anchoredPosition;
+        StaticRefrences.Instance.previewController = this;
     }
 
     // Update is called once per frame
@@ -35,6 +36,8 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     private RectTransform hand2;
     [SerializeField]
     private RectTransform gungeoneer;
+    [SerializeField]
+    private GameObject gungeoneer_LHand;
     private Vector2 defaultGungeoneerPos = new Vector2(0, 0);
     [SerializeField]
     GameObject parentPanel;
@@ -68,6 +71,7 @@ public class AnimationPreviewSpriteController : MonoBehaviour
             DisplaySprite.rectTransform.anchoredPosition = pos;
 
             hand2.gameObject.SetActive(currentFrame.isTwoHanded);
+            gungeoneer_LHand.SetActive(!currentFrame.isTwoHanded);
 
             Vector2 handpos1 = new Vector2(pos.x + currentFrame.hand1PositionX * StaticRefrences.zoomScale, pos.y + currentFrame.hand1PositionY * StaticRefrences.zoomScale);
             Vector2 handpos2 = new Vector2(pos.x + currentFrame.hand2PositionX * StaticRefrences.zoomScale, pos.y + currentFrame.hand2PositionY * StaticRefrences.zoomScale);

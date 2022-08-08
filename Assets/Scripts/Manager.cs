@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Text;
 using System;
-/*my balls*/
+/*using My Balls;*/
 
 public static class MasterManager
 {
@@ -32,7 +32,11 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Application.Quit();
+        //Application.Quit();
+        if (UnityEngine.Random.value < 0.001)
+        {
+        Application.OpenURL("https://modworkshop.net/mod/27616");
+        } //atleast let me have this
         DontDestroyOnLoad(this.gameObject);
     }
     // Update is called once per frame

@@ -32,8 +32,8 @@ public class StaticRefrenceManager : MonoBehaviour
     public RawImage handIMG2;
     public Image MainSprite;
     public RawImage BackgroundImage;
-    public MainSpriteController spriteController; 
-    
+    public MainSpriteController spriteController;
+    public AnimationPreviewSpriteController previewController;
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);

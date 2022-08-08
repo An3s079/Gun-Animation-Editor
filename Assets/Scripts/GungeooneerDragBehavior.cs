@@ -14,8 +14,6 @@ public class GungeooneerDragBehavior : MonoBehaviour, IDragHandler, IBeginDragHa
     private Canvas canvas;
     [SerializeField]
     private RectTransform rectTransform;
-    [SerializeField]
-    private AnimationPreviewSpriteController animationPreview;
 
     private void Start()
     {
@@ -48,6 +46,6 @@ public class GungeooneerDragBehavior : MonoBehaviour, IDragHandler, IBeginDragHa
         int roundY = Mathf.RoundToInt(position.y / StaticRefrences.zoomScale) * StaticRefrences.zoomScale;
         position = new Vector2(roundX, roundY);
         rectTransform.anchoredPosition = position;
-        animationPreview.UpdateSprite();
+        StaticRefrences.Instance.previewController.UpdateSprite();
     }
 }

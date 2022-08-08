@@ -30,7 +30,8 @@ public class TabDisplay : MonoBehaviour
             if (animationInfo?.frames?[0]?.texture!= null)
             {
                 texture = animationInfo.frames[0].texture;
-                buttonImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 1);             
+                buttonImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 1);
+                buttonImage.preserveAspect = true;
             }
         }
     }
@@ -38,6 +39,7 @@ public class TabDisplay : MonoBehaviour
     public void OnTabClicked()
     {
         StaticRefrences.Instance.spriteController.SetAnimation(animationInfo);
+        StaticRefrences.Instance.previewController.UpdateSprite();
     }
 
     void Update()

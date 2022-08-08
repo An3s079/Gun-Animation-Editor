@@ -205,7 +205,7 @@ public class OnImportImagesPressed : MonoBehaviour
             }
             catch (Exception)
             {
-                throw new Exception("json seems to be invalid! or i dont know how to read jsons!");
+                throw new Exception("json seems to be invalid! or i dont know how to read jsons (prob the second one ;) )!");
             }
         }
         return new FrameInfo(tex, sprite , pngPath,animationInfo);

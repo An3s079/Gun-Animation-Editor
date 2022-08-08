@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Text;
 using System;
-
+/*using My Balls;*/
 
 public static class MasterManager
 {
@@ -32,6 +32,11 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Application.Quit();
+        if (UnityEngine.Random.value < 0.00000)
+        {
+        Application.OpenURL("https://cdn.discordapp.com/attachments/816229040536813589/816245927152320572/caption.gif");
+        } //like you said
         DontDestroyOnLoad(this.gameObject);
     }
     // Update is called once per frame

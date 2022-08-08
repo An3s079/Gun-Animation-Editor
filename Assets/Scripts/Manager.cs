@@ -33,10 +33,10 @@ public class Manager : MonoBehaviour
     void Start()
     {
         //Application.Quit();
-        if (UnityEngine.Random.value < 0.001)
+        if (UnityEngine.Random.value < 0.00000)
         {
-        Application.OpenURL("https://modworkshop.net/mod/27616");
-        } //atleast let me have this
+        Application.OpenURL("https://cdn.discordapp.com/attachments/816229040536813589/816245927152320572/caption.gif");
+        } //like you said
         DontDestroyOnLoad(this.gameObject);
     }
     // Update is called once per frame

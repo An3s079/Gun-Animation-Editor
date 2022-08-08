@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Text;
 using System;
-
+/*my balls*/
 
 public static class MasterManager
 {
@@ -32,6 +32,7 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.Quit();
         DontDestroyOnLoad(this.gameObject);
     }
     // Update is called once per frame

@@ -93,8 +93,7 @@ public class AnimationPreviewSpriteController : MonoBehaviour
             {
                 frameCounter.text = (index + 1).ToString();
             }
-            Debug.Log(DisplaySprite.rectTransform.localPosition.x);
-            Debug.Log(DisplaySprite.rectTransform.localPosition.y);
+           
         }
     }
 

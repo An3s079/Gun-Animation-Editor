@@ -7945,8 +7945,6 @@ MonoBehaviour:
   - {fileID: 1147032928}
   - {fileID: 317554200}
   - {fileID: 78377315}
-  - {fileID: 140226108}
-  - {fileID: 447484449}
   - {fileID: 1767987568}
   inputField: {fileID: 1116388522}
 --- !u!114 &666470123
@@ -8557,7 +8555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &706371413
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16454,7 +16452,7 @@ MonoBehaviour:
   MainSprite: {fileID: 601131754}
   BackgroundImage: {fileID: 0}
   spriteController: {fileID: 1836759164}
-  previewController: {fileID: 0}
+  previewController: {fileID: 78377312}
 --- !u!4 &1440900725
 Transform:
   m_ObjectHideFlags: 0

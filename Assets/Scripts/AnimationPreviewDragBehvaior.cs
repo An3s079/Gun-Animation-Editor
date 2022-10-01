@@ -19,6 +19,7 @@ public class AnimationPreviewDragBehvaior : MonoBehaviour, IDragHandler, IBeginD
     private RectTransform rectTransform;
     [SerializeField]
     private RectTransform GungeoneerTransform;
+    Vector2 curPos = Vector2.zero;
 
     private void Start()
     {
@@ -35,20 +36,19 @@ public class AnimationPreviewDragBehvaior : MonoBehaviour, IDragHandler, IBeginD
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor / StaticRefrences.zoomScale;
     }
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-
+        curPos = rectTransform.anchoredPosition;
     }
 
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
-        Vector2 positionDiff = (rectTransform.anchoredPosition - GungeoneerTransform.anchoredPosition) / StaticRefrences.zoomScale;
-        int roundX = Mathf.RoundToInt(positionDiff.x) * StaticRefrences.zoomScale;
-        int roundY = Mathf.RoundToInt(positionDiff.y) * StaticRefrences.zoomScale;
-        rectTransform.anchoredPosition = new Vector2(roundX, roundY) + GungeoneerTransform.anchoredPosition;
+        int roundX = Mathf.RoundToInt(rectTransform.anchoredPosition.x);
+        int roundY = Mathf.RoundToInt(rectTransform.anchoredPosition.y);
+        rectTransform.anchoredPosition = new Vector2(roundX, roundY);
         StaticRefrences.Instance.previewController.UpdateOffsets();
         StaticRefrences.Instance.previewController.UpdateSprite();
         //incosnistent use of static refrences and local refrences, why am i doing this?

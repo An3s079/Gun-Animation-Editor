@@ -7276,7 +7276,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 78377312}
         m_TargetAssemblyTypeName: AnimationPreviewSpriteController, Assembly-CSharp
-        m_MethodName: Open
+        m_MethodName: Toggle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7944,7 +7944,6 @@ MonoBehaviour:
   - {fileID: 1134486996}
   - {fileID: 1147032928}
   - {fileID: 317554200}
-  - {fileID: 78377315}
   - {fileID: 1767987568}
   inputField: {fileID: 1116388522}
 --- !u!114 &666470123
@@ -16450,7 +16449,7 @@ MonoBehaviour:
   handIMG: {fileID: 1339299367}
   handIMG2: {fileID: 1134486998}
   MainSprite: {fileID: 601131754}
-  BackgroundImage: {fileID: 0}
+  BackgroundImage: {fileID: 1165003917}
   spriteController: {fileID: 1836759164}
   previewController: {fileID: 78377312}
 --- !u!4 &1440900725

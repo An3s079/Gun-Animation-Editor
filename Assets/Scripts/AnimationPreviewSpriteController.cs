@@ -127,7 +127,17 @@ public class AnimationPreviewSpriteController : MonoBehaviour
         }
 
     }
-
+    public void Toggle()
+    {
+        if (parentPanel.active)
+        {
+            Close();
+        }
+        else
+        {
+            Open();
+        }
+    }
     public void Open()
     {
         parentPanel.SetActive(true);

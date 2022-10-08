@@ -55,6 +55,9 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     private Vector2 initialOffset = Vector2.zero;
 
     private Vector2 posOffset = new Vector2(0, 0);
+
+    //magic numbers. bad maybe, i dont know. blame mtg? 
+    const int magicY = -4, magicX = 6,magicMinusY = -4, magicMinusX = -3;
     public void UpdateSprite()
     {
         if (currentAnimation != null && currentFrame != null && currentFrame.sprite != null)
@@ -64,25 +67,33 @@ public class AnimationPreviewSpriteController : MonoBehaviour
 
             DisplaySprite.SetNativeSize();
 
-            Vector2 anchoredPos = DisplaySprite.rectTransform.anchoredPosition;
-            //currently centers sprite, should actully offset sprite based on gungeoneer pos.
+            float x;
+            float y;
+            if (currentFrame.isTwoHanded)
+            {
+                x = magicMinusX + currentFrame.offsetX;
+                y = magicMinusY + currentFrame.offsetY;
+            }
+            else
+            {
+                x = magicX + currentFrame.offsetX;
+                y = magicY + currentFrame.offsetY;
+            }
+            Vector2 magicOffset = new Vector2(x, y);
 
-            Vector2 pos = gungeoneer.anchoredPosition + (new Vector2(currentFrame.offsetX, currentFrame.offsetY) + initialOffset) * StaticRefrences.zoomScale;
-            DisplaySprite.rectTransform.anchoredPosition = pos;
+            DisplaySprite.rectTransform.anchoredPosition = magicOffset + initialOffset;
 
             hand2.gameObject.SetActive(currentFrame.isTwoHanded);
             gungeoneer_LHand.SetActive(!currentFrame.isTwoHanded);
 
-            Vector2 handpos1 = new Vector2(pos.x + currentFrame.hand1PositionX * StaticRefrences.zoomScale, pos.y + currentFrame.hand1PositionY * StaticRefrences.zoomScale);
-            Vector2 handpos2 = new Vector2(pos.x + currentFrame.hand2PositionX * StaticRefrences.zoomScale, pos.y + currentFrame.hand2PositionY * StaticRefrences.zoomScale);
-
-            hand1.anchoredPosition = handpos1;
-            hand2.anchoredPosition = handpos2;
-
+            hand1.anchoredPosition = new Vector2(currentFrame.hand1PositionX, currentFrame.hand1PositionY)+magicOffset;
+            hand2.anchoredPosition = new Vector2(currentFrame.hand2PositionX, currentFrame.hand2PositionY)+magicOffset;
+            
             if (frameCounter != null)
             {
                 frameCounter.text = (index + 1).ToString();
             }
+           
         }
     }
 
@@ -102,11 +113,31 @@ public class AnimationPreviewSpriteController : MonoBehaviour
     }
     public void UpdateOffsets()
     {
-        int zoom = StaticRefrences.zoomScale;
-        currentFrame.offsetX = (DisplaySprite.rectTransform.anchoredPosition.x - gungeoneer.anchoredPosition.x) / zoom;
-        currentFrame.offsetY = (DisplaySprite.rectTransform.anchoredPosition.y - gungeoneer.anchoredPosition.y) / zoom;
-    }
+        
 
+        if (currentFrame.isTwoHanded)
+        {
+            currentFrame.offsetX = DisplaySprite.rectTransform.localPosition.x - magicMinusX;
+            currentFrame.offsetY = DisplaySprite.rectTransform.localPosition.y - magicMinusY;
+        }
+        else
+        {
+            currentFrame.offsetX = DisplaySprite.rectTransform.localPosition.x - magicX;
+            currentFrame.offsetY = DisplaySprite.rectTransform.localPosition.y - magicY;
+        }
+
+    }
+    public void Toggle()
+    {
+        if (parentPanel.active)
+        {
+            Close();
+        }
+        else
+        {
+            Open();
+        }
+    }
     public void Open()
     {
         parentPanel.SetActive(true);
